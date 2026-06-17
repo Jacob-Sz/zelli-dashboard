@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zelli — USA Lead Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0f1420;--card:#1a2232;--card2:#212c40;--ink:#e8edf6;--mut:#94a3b8;--line:#2c3a52;
+--accent:#5b8def;--green:#34d399;--red:#f87171;--amber:#fbbf24;--purple:#a78bfa;--cyan:#22d3ee;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--ink);padding:24px;line-height:1.4}
+.head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+h1{font-size:26px;font-weight:700}
+h1 span{color:var(--accent)}
+.sub{color:var(--mut);font-size:13px}
+.stamp{color:var(--mut);font-size:12px;text-align:right}
+.bar{height:3px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--cyan));border-radius:3px;margin:14px 0 22px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi .v{font-size:30px;font-weight:700}
+.kpi .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.kpi .d{font-size:12px;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h2{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-bottom:14px}
+.col4{grid-column:span 4}.col6{grid-column:span 6}.col8{grid-column:span 8}.col12{grid-column:span 12}
+@media(max-width:980px){.col4,.col6,.col8{grid-column:span 12}}
+canvas{max-height:260px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;background:var(--card)}
+tbody tr:hover{background:var(--card2)}
+.scroll{max-height:430px;overflow:auto}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.p-book{background:rgba(52,211,153,.18);color:var(--green)}
+.p-manual{background:rgba(167,139,250,.18);color:var(--purple)}
+.p-view{background:rgba(148,163,184,.16);color:var(--mut)}
+.p-near{background:rgba(34,211,238,.16);color:var(--cyan)}
+.rec{background:var(--card2);border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.rec b{color:var(--ink)} .rec .why{color:var(--mut);font-size:12px;margin-top:3px}
+.rec.high{border-left-color:var(--red)} .rec.med{border-left-color:var(--amber)}
+.tag{font-size:10px;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px}
+.tag.h{background:rgba(248,113,113,.2);color:var(--red)} .tag.m{background:rgba(251,191,36,.2);color:var(--amber)} .tag.l{background:rgba(52,211,153,.2);color:var(--green)}
+.right{text-align:right} .green{color:var(--green)} .red{color:var(--red)} .amber{color:var(--amber)} .mut{color:var(--mut)}
+.foot{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
+.flag{font-size:11px;color:var(--amber)}
+.dfbtn{background:var(--card2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.dfbtn:hover{color:var(--ink)} .dfbtn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+<div class="head">
+  <div><h1>ZELLI · <span>USA Lead Dashboard</span> <span style='font-size:12px;color:#34d399;border:1px solid #2c3a52;padding:2px 8px;border-radius:8px'>SHAREABLE · no customer details</span></h1>
+  <div class="sub">Microsoft Clarity × Zelli Quotes · United States market · aggregate view (addresses removed)</div></div>
+  <div class="stamp" id="stamp"></div>
+</div>
+<div class="bar"></div>
+<div class="kpis" id="kpis"></div>
+
+<div class="grid">
+  <div class="card col12" style="border-left:3px solid var(--cyan)"><h2>🔑 Key insights</h2><div id="insights"></div></div>
+  <div class="card col4"><h2>Funnel</h2><canvas id="funnel"></canvas></div>
+  <div class="card col4"><h2>Lead Outcomes</h2><canvas id="outcomes"></canvas></div>
+  <div class="card col4"><h2>Traffic Source</h2><canvas id="sources"></canvas></div>
+
+  <div class="card col4"><h2>Lead geography (vs DFW service area)</h2><canvas id="geo"></canvas></div>
+  <div class="card col6"><h2>Why visitors bounced</h2><canvas id="bounce"></canvas></div>
+  <div class="card col6"><h2>Lead volume by day</h2><canvas id="byday"></canvas></div>
+
+  <div class="card col12"><h2>Manual-process losses — engaged leads we lost (by root cause)</h2>
+    <div class="scroll"><table id="lossT"><thead><tr>
+      <th>User</th><th>Vehicle</th><th>Service</th><th class="right">Quote</th><th class="right">Deposit</th><th>Luxury</th><th>Root cause</th><th>Behavior</th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card col12"><h2>All leads (reached a quote) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
+    <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div class="scroll"><table id="leadT"><thead><tr>
+      <th>Time</th><th>User</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">Quote $</th><th>Status</th><th>Notes</th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card col12"><h2>Recommendations — how to proceed</h2><div id="recs"></div></div>
+</div>
+
+<div class="foot">Auto-generated snapshot · refresh each morning · data window shown above</div>
+
+<script>
+const DATA = {
+ "window":"This week · Jun 15 – 16, 2026 (Mon-start, week-to-date) · USA",
+ "generated":"2026-06-16 15:01 (live update)",
+ "kpis":{"visitors":76,"leads":20,"leadPct":26,"bounces":56,"bouncePct":74,"booked":0,"bookPct":0,"losses":2,"near":3,"pipeline":"$4.7K"},
+ "outcomes":{"Booked":0,"Reached book/pay":3,"Manual-process":2,"Quote viewed":15},
+ "sources":{"Facebook":56,"Instagram":11,"Direct":9},
+ "geo":{"DFW metro":2,"Rest of Texas":1,"Outside Texas":7},
+ "today":{"date":"Jun 16","visitors":33,"leads":10,"bounces":23,"booked":0,"newManual":"Mercedes ML (Aledo TX)"},
+ "bounceTypes":{"Instant tap-off":12,"Quick exit":12,"Frustration":14,"Idle / left open":9,"Internal / team":9},
+ "byDay":{"Jun 15":{"leads":10,"bounces":30},"Jun 16":{"leads":10,"bounces":26}},
+ "losses":[
+  {"user":"b49s0s","vehicle":"2012 Mercedes ML","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun16 · 2:40 · 12 clk"},
+  {"user":"2ap78a","vehicle":"2021 BMW 4-Series","service":"Fob programming","loc":"","quote":"238.15","dep":"71","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun15 · 0:17 · 0 clk"}
+ ],
+ "leads":[
+  {"time":"Jun16 11:21a","user":"1gnzduh","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"20 clicks · 5 pages"},
+  {"time":"Jun16 9:46a","user":"w2h6ar","src":"Direct","dev":"MobSafari","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"2 sessions"},
+  {"time":"Jun16 7:10a","user":"s0b95p","src":"IG","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"10 clicks"},
+  {"time":"Jun16 6:14a","user":"akctme","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"9 clicks"},
+  {"time":"Jun16 3:25a","user":"1ooufzp","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"5:55 dwell · 1 click"},
+  {"time":"Jun16 3:15a","user":"b49s0s","src":"FB","dev":"Mobile","vehicle":"2012 Mercedes ML","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"Luxury +$39 dep · no part","flag":1},
+  {"time":"Jun16 2:44a","user":"c2l4sy","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"15 clicks"},
+  {"time":"Jun16 2:28a","user":"1te73c5","src":"FB","dev":"FirefoxMob","vehicle":"","service":"Car key copy","outcome":"Reached /payment","quote":"859.29","loc":"","status":"Incomplete","notes":"34 min · 30 clk · $859 · NOT completed","flag":1},
+  {"time":"Jun16 1:39a","user":"12nixx3","src":"FB","dev":"Mobile","vehicle":"","service":"Key copy prog","outcome":"Reached /payment","quote":"226.19","loc":"","status":"Completed","notes":"⭐ SCHEDULED today 2PM · $68 dep","flag":1},
+  {"time":"Jun15 11:52p","user":"1ytr7ev","src":"FB","dev":"Mobile","vehicle":"2008 Lexus ES 350","service":"Car key copy","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"8 clicks"},
+  {"time":"Jun15 10:57p","user":"860arp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"9 clicks"},
+  {"time":"Jun15 9:46p","user":"u8s0s7","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Lockout","outcome":"Reached /payment","quote":"227.33","loc":"","status":"Completed","notes":"internal test address","flag":1},
+  {"time":"Jun15 9:35p","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clicks · hit /book","flag":1},
+  {"time":"Jun15 9:34p","user":"t43k8a","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"12 clicks"},
+  {"time":"Jun15 3:17p","user":"iho7dw","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"15 clicks · 6 pages"},
+  {"time":"Jun15 5:35a","user":"2ap78a","src":"IG","dev":"Mobile","vehicle":"2021 BMW 4-Series","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"238.15","loc":"","status":"Completed","notes":"Luxury +$71 dep · no part","flag":1},
+  {"time":"Jun15 4:39a","user":"fwjl32","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"226.19","loc":"","status":"Completed","notes":"Luxury +$68 dep"},
+  {"time":"Jun15 2:52a","user":"evffhm","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"345.31","loc":"","status":"Completed","notes":"Luxury +$104 dep"},
+  {"time":"Jun15 1:51a","user":"flll59","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"204.48","loc":"","status":"Completed","notes":"17 clicks"}
+ ],
+ "insights":[
+  {"sev":"high","t":"🔥 3 hot leads almost converted — chase them NOW","w":"Florissant MO ($226) SCHEDULED a job for today 2 PM. Scranton PA spent 34 min on an $859 quote and reached /payment (shows NOT completed). San Antonio TX hit /book. Call these three before anything else."},
+  {"sev":"high","t":"Still 0 confirmed bookings from 76 visitors","w":"20 quotes, 3 reached the book/payment step, but none crossed to /confirmed this week. The final payment/booking step is still where they're lost."},
+  {"sev":"high","t":"Both manual losses are 'no key-part' luxury fobs","w":"Mercedes ML (Aledo TX) and BMW 4-Series (Maplewood NJ) both hit 'no CKE part data' + a deposit → manual. Add these fob parts to the catalog and move the deposit to booking."},
+  {"sev":"med","t":"Landing-page form friction continues","w":"More 30, 23, 22, 20, 15-click single-stall sessions on /lp/auto — the same disabled-CTA + unresponsive-dropdown issue confirmed on the heatmap."},
+  {"sev":"med","t":"Still almost all outside DFW","w":"Known locations this week: Scranton PA, Florissant MO, Maplewood NJ, Fort Wayne IN, LeRoy WV, San Antonio TX — only Rowlett & Aledo are in your DFW service area."}
+ ],
+ "recs":[
+  {"pri":"high","t":"Call the 3 finish-line leads today","impact":"near-money","w":"12nixx3 (Florissant MO, scheduled 2 PM today!), 1te73c5 (Scranton PA, $859, reached payment, not completed), rx9x1o (San Antonio TX, reached /book). These are the hottest leads of the week — phone them first."},
+  {"pri":"high","t":"Fix the /lp/auto form — CTA + mobile dropdowns","impact":"unblocks the funnel","w":"Confirmed on the heatmap: the 'See my flat-rate price' button renders disabled/greyed and the 4 dropdowns barely work in the FB/IG in-app browser. Make the CTA clearly enabled and swap dropdowns for tap-friendly pickers."},
+  {"pri":"high","t":"Verify service area vs. ad targeting","impact":"could be #1 issue","w":"Most leads are far outside DFW (PA, MO, NJ, IN, WV, San Antonio). If you only service DFW, geo-target the ads — you may be paying for unfulfillable leads."},
+  {"pri":"high","t":"Move the deposit out of the quote step","impact":"both losses had it","w":"Both manual losses carried a $39–$71 deposit. Collect at booking, not at quote view."},
+  {"pri":"med","t":"Add fob key-part coverage (Mercedes/BMW)","impact":"fewer manuals","w":"Both losses were luxury fob jobs flagged 'no key-part data'. Add these parts so they price automatically instead of dumping to manual."},
+  {"pri":"med","t":"Add financing / anchoring on quotes over $300","impact":"high-$ leads","w":"The $859 Scranton quote stalled at payment. Show payment plans or 'from $X' on higher-priced jobs."},
+  {"pri":"med","t":"Restore data APIs & speed up pricing","impact":"speed = conversion","w":"batchdata (403), smarty (402), placekey (401) still failing on quotes. Fix the subscriptions and cache results."},
+  {"pri":"low","t":"Auto-SMS the quote-viewers","impact":"recoverable","w":"The quote-viewers each have a saved quote link. Trigger an SMS/email follow-up within the hour."},
+  {"pri":"low","t":"Exclude internal/test traffic in Clarity","impact":"clean data","w":"Filter out the test address 6732 Dapper Drive / McKinney and Chrome-PC team users (e.g. u8s0s7)."},
+  {"pri":"low","t":"Open a Google channel","impact":"new demand","w":"Still zero Google leads — test Google Search / Local Services Ads for 'car key replacement near me'."}
+ ]
+};
+const $ = (s)=>document.querySelector(s);
+document.getElementById('stamp').innerHTML =
+  'Window: <b>'+DATA.window+'</b><br>Generated: '+DATA.generated;
+
+// KPIs + date-filter helpers
+const norm=s=>(s||'').replace(/\s+/g,'');
+const dOf=s=>(s||'').split(' ')[0];
+const pq=q=>parseFloat(String(q||'').replace(/,/g,''))||0;
+const fmtK=n=>'$'+(n>=1000?(n/1000).toFixed(1)+'K':Math.round(n));
+function renderKpis(k){const kdefs=[
+ ['USA visitors',k.visitors,'',''],
+ ['Leads (got a quote)',k.leads,'green',(k.leadPct||0)+'% of visitors'],
+ ['Bounced (no quote)',k.bounces,'red',(k.bouncePct||0)+'% bounce'],
+ ['Booked (paid)',k.booked,'green',(k.bookPct||0)+'% of leads'],
+ ['Manual-process losses',k.losses,'amber','engaged but lost'],
+ ['Quote pipeline value',k.pipeline,'','sum of lead quotes'],
+];$('#kpis').innerHTML=kdefs.map(d=>`<div class="kpi"><div class="v ${d[2]}">${d[1]}</div><div class="l">${d[0]}</div><div class="d mut">${d[3]}</div></div>`).join('');}
+renderKpis(DATA.kpis);
+
+const C={ink:'#e8edf6',grid:'#2c3a52',mut:'#94a3b8'};
+Chart.defaults.color=C.mut;Chart.defaults.borderColor=C.grid;Chart.defaults.font.family="Segoe UI";
+
+const funnelChart=new Chart($('#funnel'),{type:'bar',data:{labels:['Visitors','Reached quote','Reached book','Booked'],
+ datasets:[{data:[DATA.kpis.visitors,DATA.kpis.leads,DATA.kpis.near,DATA.kpis.booked],backgroundColor:['#5b8def','#22d3ee','#fbbf24','#34d399'],borderRadius:6}]},
+ options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:C.grid}},y:{grid:{display:false}}}}});
+
+const outChart=new Chart($('#outcomes'),{type:'doughnut',data:{labels:Object.keys(DATA.outcomes),
+ datasets:[{data:Object.values(DATA.outcomes),backgroundColor:['#34d399','#22d3ee','#a78bfa','#94a3b8']}]},
+ options:{plugins:{legend:{position:'right',labels:{boxWidth:12}}}}});
+
+new Chart($('#sources'),{type:'doughnut',data:{labels:Object.keys(DATA.sources),
+ datasets:[{data:Object.values(DATA.sources),backgroundColor:['#5b8def','#a78bfa','#22d3ee','#fbbf24','#94a3b8']}]},
+ options:{plugins:{legend:{position:'right',labels:{boxWidth:12}}}}});
+
+new Chart($('#geo'),{type:'doughnut',data:{labels:Object.keys(DATA.geo||{}),
+ datasets:[{data:Object.values(DATA.geo||{}),backgroundColor:['#34d399','#fbbf24','#f87171']}]},
+ options:{plugins:{legend:{position:'right',labels:{boxWidth:12}}}}});
+
+new Chart($('#bounce'),{type:'bar',data:{labels:Object.keys(DATA.bounceTypes),
+ datasets:[{data:Object.values(DATA.bounceTypes),backgroundColor:'#f87171',borderRadius:6}]},
+ options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:C.grid}}}}});
+
+const bydayChart=new Chart($('#byday'),{type:'bar',data:{labels:Object.keys(DATA.byDay),
+ datasets:[{label:'Leads',data:Object.values(DATA.byDay).map(o=>o.leads),backgroundColor:'#22d3ee',borderRadius:5},
+ {label:'Bounces',data:Object.values(DATA.byDay).map(o=>o.bounces),backgroundColor:'#475569',borderRadius:5}]},
+ options:{plugins:{legend:{labels:{boxWidth:12}}},scales:{x:{grid:{display:false},stacked:true},y:{grid:{color:C.grid},stacked:true}}}});
+
+// loss table
+$('#lossT tbody').innerHTML=DATA.losses.map(r=>`<tr>
+ <td>${r.user}</td><td>${r.vehicle}</td><td>${r.service}</td>
+ <td class="right">$${r.quote}</td><td class="right ${r.dep!=='0'?'amber':'mut'}">${r.dep!=='0'?'$'+r.dep:'—'}</td>
+ <td>${r.lux}</td><td>${r.cause}</td><td class="mut">${r.beh}</td></tr>`).join('');
+
+// leads table
+const pc={'BOOKED':'p-book','MANUAL-PROCESS':'p-manual','Reached /book':'p-near','Reached /payment':'p-near','Engaged':'p-near'};
+$('#leadT tbody').innerHTML=DATA.leads.map(r=>{
+ const cls=pc[r.outcome]||'p-view';
+ const d=(r.time||'').split(' ')[0];
+ return `<tr data-date="${d}"><td class="mut">${r.time}</td><td>${r.user}</td><td>${r.src}</td><td>${r.dev}</td>
+ <td>${r.vehicle||'—'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
+ <td class="right">${r.quote?'$'+r.quote:'—'}</td><td>${r.status||'—'}</td>
+ <td class="${r.flag?'flag':'mut'}">${r.notes||''}</td></tr>`}).join('');
+
+// ---------- date filter: recompute KPIs + funnel/outcomes/by-day + table ----------
+function bucket(o){ if(o==='BOOKED')return 'Booked'; if(o&&o.indexOf('Reached')===0)return 'Reached book/pay'; if(o==='MANUAL-PROCESS')return 'Manual-process'; return 'Quote viewed'; }
+function applyRange(sel){            // sel = null for All, else array of normalized dates e.g. ['Jun16']
+ const isAll=!sel;
+ const dayKeys=Object.keys(DATA.byDay||{});
+ const days = isAll ? dayKeys.map(norm) : sel;
+ const L = DATA.leads.filter(l=> days.includes(dOf(l.time)) );
+ const leads=L.length;
+ const bounces=dayKeys.filter(d=>days.includes(norm(d))).reduce((s,d)=>s+(DATA.byDay[d].bounces||0),0);
+ const visitors=leads+bounces;
+ const booked=L.filter(l=>l.outcome==='BOOKED').length;
+ const losses=L.filter(l=>l.outcome==='MANUAL-PROCESS').length;
+ const near=isAll?(DATA.kpis.near||0):L.filter(l=>l.outcome&&l.outcome.indexOf('Reached')===0).length;
+ const k=isAll?DATA.kpis:{visitors,leads,leadPct:visitors?Math.round(leads/visitors*100):0,bounces,bouncePct:visitors?Math.round(bounces/visitors*100):0,booked,bookPct:leads?+(booked/leads*100).toFixed(1):0,losses,pipeline:fmtK(L.reduce((s,l)=>s+pq(l.quote),0))};
+ renderKpis(k);
+ funnelChart.data.datasets[0].data=[k.visitors,k.leads,near,k.booked]; funnelChart.update();
+ let oc; if(isAll){oc=DATA.outcomes;} else {oc={}; L.forEach(l=>{const b=bucket(l.outcome); oc[b]=(oc[b]||0)+1;});}
+ outChart.data.labels=Object.keys(oc); outChart.data.datasets[0].data=Object.values(oc); outChart.update();
+ const bdk=dayKeys.filter(d=>days.includes(norm(d)));
+ bydayChart.data.labels=bdk; bydayChart.data.datasets[0].data=bdk.map(d=>DATA.byDay[d].leads); bydayChart.data.datasets[1].data=bdk.map(d=>DATA.byDay[d].bounces); bydayChart.update();
+ const rows=[...document.querySelectorAll('#leadT tbody tr')]; let n=0;
+ rows.forEach(t=>{const show=isAll||days.includes(t.dataset.date); t.style.display=show?'':'none'; if(show)n++;});
+ const lc=document.getElementById('leadCount'); if(lc) lc.textContent='— showing '+n+' of '+rows.length;
+}
+(function(){
+ const wrap=document.getElementById('leadFilter'); if(!wrap) return;
+ const dates=[...new Set(DATA.leads.map(l=>dOf(l.time)).filter(Boolean))];
+ const mk=(label,val)=>{const b=document.createElement('button'); b.className='dfbtn'; b.textContent=label;
+   b.onclick=()=>{ wrap.querySelectorAll('.dfbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); applyRange(val); };
+   return b; };
+ const all=mk('All ('+DATA.leads.length+')',null); all.classList.add('on'); wrap.appendChild(all);
+ dates.forEach(d=>{ const c=DATA.leads.filter(l=>dOf(l.time)===d).length; wrap.appendChild(mk(d+' ('+c+')',[d])); });
+ applyRange(null);
+})();
+
+// recommendations
+$('#insights').innerHTML=(DATA.insights||[]).map(x=>`<div class="rec ${x.sev||''}"><b>${x.t}</b><div class="why">${x.w}</div></div>`).join('');
+$('#recs').innerHTML=DATA.recs.map(r=>`<div class="rec ${r.pri}"><b>${r.t}</b><span class="tag ${r.pri==='high'?'h':r.pri==='med'?'m':'l'}">${r.pri.toUpperCase()}</span>${r.impact?`<span class="tag l">${r.impact}</span>`:''}<div class="why">${r.w}</div></div>`).join('');
+</script>
+</body>
+</html>
+
+
+
+
+
+
