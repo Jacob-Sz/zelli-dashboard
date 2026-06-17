@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zelli — USA Lead Dashboard</title>
+<title>Zelli â€” USA Lead Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#0f1420;--card:#1a2232;--card2:#212c40;--ink:#e8edf6;--mut:#94a3b8;--line:#2c3a52;
@@ -51,15 +51,19 @@ tbody tr:hover{background:var(--card2)}
 </head>
 <body>
 <div class="head">
-  <div><h1>ZELLI · <span>USA Lead Dashboard</span> <span style='font-size:12px;color:#34d399;border:1px solid #2c3a52;padding:2px 8px;border-radius:8px'>SHAREABLE · no customer details</span></h1>
-  <div class="sub">Microsoft Clarity × Zelli Quotes · United States market · aggregate view (addresses removed)</div></div>
+  <div><h1>ZELLI Â· <span>USA Lead Dashboard</span> <span style='font-size:12px;color:#34d399;border:1px solid #2c3a52;padding:2px 8px;border-radius:8px'>SHAREABLE Â· no customer details</span></h1>
+  <div class="sub">Microsoft Clarity Ã— Zelli Quotes Â· United States market Â· aggregate view (addresses removed)</div></div>
   <div class="stamp" id="stamp"></div>
 </div>
 <div class="bar"></div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">ðŸ—“ Filter the whole report by day</span>
+  <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
 <div class="kpis" id="kpis"></div>
 
 <div class="grid">
-  <div class="card col12" style="border-left:3px solid var(--cyan)"><h2>🔑 Key insights</h2><div id="insights"></div></div>
+  <div class="card col12" style="border-left:3px solid var(--cyan)"><h2>ðŸ”‘ Key insights</h2><div id="insights"></div></div>
   <div class="card col4"><h2>Funnel</h2><canvas id="funnel"></canvas></div>
   <div class="card col4"><h2>Lead Outcomes</h2><canvas id="outcomes"></canvas></div>
   <div class="card col4"><h2>Traffic Source</h2><canvas id="sources"></canvas></div>
@@ -68,121 +72,130 @@ tbody tr:hover{background:var(--card2)}
   <div class="card col6"><h2>Why visitors bounced</h2><canvas id="bounce"></canvas></div>
   <div class="card col6"><h2>Lead volume by day</h2><canvas id="byday"></canvas></div>
 
-  <div class="card col12"><h2>Manual-process losses — engaged leads we lost (by root cause)</h2>
+  <div class="card col12"><h2>Manual-process losses â€” engaged leads we lost (by root cause)</h2>
     <div class="scroll"><table id="lossT"><thead><tr>
       <th>User</th><th>Vehicle</th><th>Service</th><th class="right">Quote</th><th class="right">Deposit</th><th>Luxury</th><th>Root cause</th><th>Behavior</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
   <div class="card col12"><h2>All leads (reached a quote) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
-    <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
     <div class="scroll"><table id="leadT"><thead><tr>
-      <th>Time</th><th>User</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">Quote $</th><th>Status</th><th>Notes</th>
+      <th>Date</th><th>User</th><th>â–¶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12" style="border-left:3px solid var(--purple)"><h2>📇 Dropped customers — recovery list (service address)</h2>
+  <div class="card col12" style="border-left:3px solid var(--purple)"><h2>ðŸ“‡ Dropped customers â€” recovery list (service address)</h2>
     <div class="scroll"><table id="dropT"><thead><tr>
-      <th>User</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
+      <th>User</th><th>â–¶ Video</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>Recommendations — how to proceed</h2><div id="recs"></div></div>
+  <div class="card col12"><h2>Recommendations â€” how to proceed</h2><div id="recs"></div></div>
 </div>
 
-<div class="foot">Auto-generated snapshot · refresh each morning · data window shown above</div>
+<div class="foot">Auto-generated snapshot Â· refresh each morning Â· data window shown above</div>
 
 <script>
 const DATA = {
- "window":"This week · Jun 15 – 17, 2026 (Mon-start, week-to-date) · USA",
- "generated":"2026-06-17 13:31 (live update)",
- "kpis":{"visitors":114,"leads":30,"leadPct":26,"bounces":84,"bouncePct":74,"booked":1,"bookPct":3.3,"losses":3,"near":2,"pipeline":"$6.0K"},
- "outcomes":{"Booked":1,"Reached book/pay":2,"Manual-process":3,"Quote viewed":24},
- "sources":{"Facebook":84,"Instagram":15,"Direct":15},
- "geo":{"DFW metro":4,"Rest of Texas":4,"Outside Texas":15},
- "today":{"date":"Jun 17","visitors":"—","leads":3,"bounces":"—","booked":0,"newManual":"none yet"},
- "bounceTypes":{"Instant tap-off":18,"Quick exit":18,"Frustration":20,"Idle / left open":14,"Internal / team":14},
- "byDay":{"Jun 15":{"leads":10,"bounces":30},"Jun 16":{"leads":17,"bounces":30},"Jun 17":{"leads":3,"bounces":24}},
+ "window":"Last 30 days Â· USA Â· full history (active campaign Jun 9â€“17)",
+ "generated":"2026-06-17 18:53 (30-day deep analysis)",
+ "kpis":{"visitors":536,"leads":147,"leadPct":27,"bounces":389,"bouncePct":73,"booked":5,"bookPct":3.4,"losses":22,"near":7,"pipeline":"~$30K"},
+ "outcomes":{"Booked":5,"Reached book/pay":7,"Manual-process":22,"Quote viewed":113},
+ "sources":{"Facebook":84,"Instagram":12,"Direct":51},
+ "geo":{"DFW metro":18,"Rest of Texas":12,"Outside Texas":117},
+ "today":{"date":"Jun 17","visitors":"â€”","leads":5,"bounces":16,"booked":0,"newManual":"see losses"},
+ "bounceTypes":{"Instant tap-off":78,"Quick exit":86,"Frustration":92,"Idle / left open":66,"Internal / team":67},
+ "byDay":{"Jun 9":{"leads":5,"bounces":14},"Jun 10":{"leads":22,"bounces":58},"Jun 11":{"leads":5,"bounces":14},"Jun 12":{"leads":6,"bounces":16},"Jun 13":{"leads":11,"bounces":29},"Jun 14":{"leads":19,"bounces":50},"Jun 15":{"leads":10,"bounces":37},"Jun 16":{"leads":17,"bounces":38},"Jun 17":{"leads":5,"bounces":16}},
  "losses":[
-  {"user":"b49s0s","vehicle":"2012 Mercedes ML","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun16 · 2:40 · 12 clk"},
-  {"user":"2ap78a","vehicle":"2021 BMW 4-Series","service":"Fob programming","loc":"","quote":"238.15","dep":"71","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun15 · 0:17 · 0 clk"},
-  {"user":"1o20y0d","vehicle":"2021 Volvo XC90","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Dealer-only key (must come from dealer)","beh":"Jun16 · 1:05 · 10 clk"}
+  {"user":"14ztl18","vehicle":"2023 Mercedes EQS","service":"Car key copy","loc":"","quote":"2,463.77","dep":"0","lux":"Yes","cause":"Price shock ($2.2k smart key)","beh":"Jun11"},
+  {"user":"15xq8be","vehicle":"2022 Mercedes GLE","service":"Car key copy","loc":"","quote":"2,463.77","dep":"0","lux":"Yes","cause":"Price shock ($2.2k smart key)","beh":"Jun9"},
+  {"user":"ci9mag","vehicle":"2013 Mercedes E-Class","service":"All keys lost","loc":"","quote":"259.80","dep":"200","lux":"Yes","cause":"Luxury deposit gate","beh":"Jun11"},
+  {"user":"1qrukp0","vehicle":"2017 BMW 3-Series","service":"Car key copy","loc":"","quote":"167.79","dep":"150","lux":"Yes","cause":"Luxury deposit gate","beh":"Jun9"},
+  {"user":"b49s0s","vehicle":"2012 Mercedes ML","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun16"},
+  {"user":"2ap78a","vehicle":"2021 BMW 4-Series","service":"Fob programming","loc":"","quote":"238.15","dep":"71","lux":"Yes","cause":"Luxury + no key-part data","beh":"Jun15"},
+  {"user":"1o20y0d","vehicle":"2021 Volvo XC90","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Dealer-only key (order from dealer)","beh":"Jun16"},
+  {"user":"1onookt","vehicle":"2019 Chevy Tahoe","service":"Car key copy","loc":"","quote":"215.36","dep":"65","lux":"Yes (BUG)","cause":"Luxury misclassification","beh":"Jun12"},
+  {"user":"15uoxbc","vehicle":"2023 VW Taos","service":"Fob programming","loc":"","quote":"129.90","dep":"0","lux":"Yes (BUG)","cause":"Luxury misclassification + no part","beh":"Jun10"},
+  {"user":"tzqafq","vehicle":"2015 Chevy Sonic","service":"Car key copy","loc":"","quote":"167.79","dep":"0","lux":"Yes (BUG)","cause":"Luxury misclassification + no part","beh":"Jun9"},
+  {"user":"1bd2ok8","vehicle":"2013 Audi A4","service":"Car key copy","loc":"","quote":"167.79","dep":"0","lux":"No","cause":"No key-part data + 8.3s fetch","beh":"Jun10"}
  ],
  "leads":[
-  {"time":"Jun17 11:05a","user":"1eydeqj","src":"FB","dev":"Mobile","vehicle":"2005 Dodge Durango","service":"Car lockout","outcome":"Quote viewed","quote":"194.85","loc":"","status":"Completed","notes":"left in 10s"},
-  {"time":"Jun17 11:00a","user":"1psbn2a","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":"12 clicks"},
-  {"time":"Jun17 10:45a","user":"yqmb15","src":"FB","dev":"Mobile","vehicle":"2024 Genesis GV70","service":"Fob prog","outcome":"Quote viewed","quote":"129.90","loc":"","status":"Completed","notes":"23 clicks · high friction","flag":1},
-  {"time":"Jun16 10:23p","user":"1o20y0d","src":"Direct","dev":"Chrome PC","vehicle":"2021 Volvo XC90","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"dealer-only key","flag":1},
-  {"time":"Jun16 9:35p","user":"16m6msx","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"9 clicks"},
-  {"time":"Jun16 7:47p","user":"6be35y","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"395.00","loc":"","status":"Completed","notes":"DFW · $395","flag":1},
-  {"time":"Jun16 4:40p","user":"1abhzny","src":"FB","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"337.63","loc":"","status":"Completed","notes":"luxury +$101 dep"},
-  {"time":"Jun16 4:10p","user":"w1sbtv","src":"FB","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"421.08","loc":"","status":"Completed","notes":""},
-  {"time":"Jun16 11:21a","user":"1gnzduh","src":"FB","dev":"Mobile","vehicle":"2020 Chevy Equinox","service":"Fob prog","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"20 clicks · luxury misflag","flag":1},
-  {"time":"Jun16 9:46a","user":"w2h6ar","src":"Direct","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"534.65","loc":"","status":"Completed","notes":""},
-  {"time":"Jun16 7:10a","user":"s0b95p","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"480.52","loc":"","status":"Completed","notes":""},
-  {"time":"Jun16 6:14a","user":"akctme","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"9 clicks"},
-  {"time":"Jun16 3:25a","user":"1ooufzp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"216.39","loc":"","status":"Completed","notes":"DFW"},
-  {"time":"Jun16 3:15a","user":"b49s0s","src":"FB","dev":"Mobile","vehicle":"2012 Mercedes ML","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
-  {"time":"Jun16 2:44a","user":"c2l4sy","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"15 clicks"},
-  {"time":"Jun16 2:28a","user":"1te73c5","src":"FB","dev":"FirefoxMob","vehicle":"","service":"Car key copy","outcome":"BOOKED","quote":"859.29","loc":"","status":"Confirmed Jun 19","notes":"✓ Bruce Dunn — booked!"},
-  {"time":"Jun16 1:39a","user":"12nixx3","src":"FB","dev":"Mobile","vehicle":"Mercedes CLS '08","service":"Key copy prog","outcome":"Reached /payment","quote":"226.19","loc":"","status":"Completed","notes":"scheduled 2PM but NOT confirmed","flag":1},
-  {"time":"Jun15 11:52p","user":"1ytr7ev","src":"FB","dev":"Mobile","vehicle":"Lexus ES350 '08","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"8 clicks"},
-  {"time":"Jun15 10:57p","user":"860arp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"197.99","loc":"","status":"Completed","notes":""},
-  {"time":"Jun15 9:46p","user":"u8s0s7","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Lockout","outcome":"Reached /payment","quote":"227.33","loc":"","status":"Completed","notes":"internal test","flag":1},
-  {"time":"Jun15 9:35p","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clicks · hit /book","flag":1},
-  {"time":"Jun15 9:34p","user":"t43k8a","src":"FB","dev":"Mobile","vehicle":"","service":"automotive","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"12 clicks"},
-  {"time":"Jun15 3:17p","user":"iho7dw","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"15 clicks"},
-  {"time":"Jun15 5:35a","user":"2ap78a","src":"IG","dev":"Mobile","vehicle":"BMW 4-Series '21","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"238.15","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
-  {"time":"Jun15 4:39a","user":"fwjl32","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"226.19","loc":"","status":"Completed","notes":"luxury +$68 dep"},
-  {"time":"Jun15 2:52a","user":"evffhm","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"345.31","loc":"","status":"Completed","notes":"luxury +$104 dep"},
-  {"time":"Jun15 1:51a","user":"flll59","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"204.48","loc":"","status":"Completed","notes":"17 clicks"}
+  {"time":"Jun17","user":"yqmb15","src":"FB","dev":"Mobile","vehicle":"2024 Genesis GV70","service":"Fob prog","outcome":"Quote viewed","quote":"129.90","loc":"","status":"Completed","notes":"23 clk Â· luxury","flag":1},
+  {"time":"Jun17","user":"1psbn2a","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":""},
+  {"time":"Jun17","user":"1eydeqj","src":"FB","dev":"Mobile","vehicle":"2005 Dodge Durango","service":"Car lockout","outcome":"Quote viewed","quote":"194.85","loc":"","status":"Completed","notes":"left in 10s"},
+  {"time":"Jun16","user":"1te73c5","src":"FB","dev":"Firefox","vehicle":"","service":"Car key copy","outcome":"BOOKED","quote":"859.29","loc":"","status":"Confirmed Jun 19","notes":"âœ“ Bruce Dunn â€” booked!"},
+  {"time":"Jun16","user":"1o20y0d","src":"Direct","dev":"Chrome PC","vehicle":"2021 Volvo XC90","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"dealer-only key","flag":1},
+  {"time":"Jun16","user":"6be35y","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"395.00","loc":"","status":"Completed","notes":"DFW Â· $395","flag":1},
+  {"time":"Jun16","user":"w2h6ar","src":"Direct","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"534.65","loc":"","status":"Completed","notes":"high $"},
+  {"time":"Jun16","user":"s0b95p","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"480.52","loc":"","status":"Completed","notes":""},
+  {"time":"Jun16","user":"1abhzny","src":"FB","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"337.63","loc":"","status":"Completed","notes":"luxury +$101 dep"},
+  {"time":"Jun16","user":"b49s0s","src":"FB","dev":"Mobile","vehicle":"2012 Mercedes ML","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
+  {"time":"Jun16","user":"12nixx3","src":"FB","dev":"Mobile","vehicle":"Mercedes CLS '08","service":"Key copy prog","outcome":"Reached /payment","quote":"226.19","loc":"","status":"Completed","notes":"scheduled 2PM, unconfirmed","flag":1},
+  {"time":"Jun15","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clk Â· hit /book","flag":1},
+  {"time":"Jun15","user":"2ap78a","src":"IG","dev":"Mobile","vehicle":"BMW 4-Series '21","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"238.15","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
+  {"time":"Jun15","user":"fwjl32","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"226.19","loc":"","status":"Completed","notes":"luxury +$68 dep"},
+  {"time":"Jun15","user":"evffhm","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"345.31","loc":"","status":"Completed","notes":"luxury +$104 dep"},
+  {"time":"Jun14","user":"(19 leads)","src":"FB/IG","dev":"Mobile","vehicle":"mixed","service":"mixed","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"busiest lead day â€” see Clarity"},
+  {"time":"Jun13","user":"(11 leads)","src":"FB/IG","dev":"Mobile","vehicle":"mixed","service":"mixed","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"see Clarity"},
+  {"time":"Jun12","user":"14ztl18","src":"FB","dev":"Mobile","vehicle":"2023 Mercedes EQS","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"2,463.77","loc":"","status":"Completed","notes":"PRICE SHOCK $2.4k","flag":1},
+  {"time":"Jun12","user":"1onookt","src":"FB","dev":"Mobile","vehicle":"Chevy Tahoe '19","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"215.36","loc":"","status":"Completed","notes":"BUG luxury misflag","flag":1},
+  {"time":"Jun11","user":"y1oo2u","src":"FB","dev":"Mobile","vehicle":"2013 Hyundai Sonata","service":"Fob prog","outcome":"BOOKED","quote":"102.84","loc":"","status":"Completed","notes":"âœ“ booked $116.91"},
+  {"time":"Jun11","user":"ci9mag","src":"FB","dev":"Mobile","vehicle":"Mercedes E-Class '13","service":"All keys lost","outcome":"MANUAL-PROCESS","quote":"259.80","loc":"","status":"Completed","notes":"$200 deposit gate","flag":1},
+  {"time":"Jun10","user":"ukb2bp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"442.63","loc":"","status":"Completed","notes":"RAGE 39 clicks +$125 dep","flag":1},
+  {"time":"Jun10","user":"zs5sml","src":"FB","dev":"Mobile","vehicle":"Toyota Corolla '22","service":"Fob prog","outcome":"Reached /book","quote":"129.90","loc":"","status":"Completed","notes":"near-miss booking","flag":1},
+  {"time":"Jun10","user":"1y893iq","src":"Direct","dev":"MobSafari","vehicle":"","service":"Lockout","outcome":"Reached /book","quote":"162.38","loc":"","status":"Completed","notes":"21 clicks","flag":1},
+  {"time":"Jun10","user":"15uoxbc","src":"FB","dev":"Mobile","vehicle":"VW Taos '23","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"BUG luxury misflag","flag":1},
+  {"time":"Jun10","user":"1y2oz6g","src":"FB","dev":"Mobile","vehicle":"","service":"All keys lost","outcome":"Quote viewed","quote":"507.68","loc":"","status":"Completed","notes":"Luxury Â· $507"},
+  {"time":"Jun9","user":"15xq8be","src":"FB","dev":"Mobile","vehicle":"Mercedes GLE '22","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"2,463.77","loc":"","status":"Completed","notes":"PRICE SHOCK $2.4k","flag":1},
+  {"time":"Jun9","user":"1qrukp0","src":"IG","dev":"Mobile","vehicle":"BMW 3-Series '17","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"167.79","loc":"","status":"Completed","notes":"27 clk +$150 dep","flag":1},
+  {"time":"Jun9","user":"aaqer7","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"421.08","loc":"","status":"Completed","notes":""}
  ],
  "dropped":[
   {"user":"6be35y","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"395.00","addr":"","dfw":"DFW"},
   {"user":"b49s0s","date":"Jun16","drop":"Manual (no key-part)","vehicle":"Mercedes ML '12","price":"129.90","addr":"","dfw":"DFW"},
   {"user":"1ooufzp","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"216.39","addr":"","dfw":"DFW"},
   {"user":"fwjl32","date":"Jun15","drop":"Quote viewed","vehicle":"car key copy","price":"226.19","addr":"","dfw":"DFW"},
-  {"user":"12nixx3","date":"Jun16","drop":"Reached scheduling (2PM, no confirm)","vehicle":"Mercedes CLS '08","price":"226.19","addr":"","dfw":""},
+  {"user":"ukb2bp","date":"Jun10","drop":"Quote viewed (rage 39clk)","vehicle":"car key copy","price":"442.63","addr":"","dfw":"DFW"},
+  {"user":"1qrukp0","date":"Jun9","drop":"Manual (luxury deposit)","vehicle":"BMW 3-Series '17","price":"167.79","addr":"","dfw":"DFW"},
+  {"user":"15uoxbc","date":"Jun10","drop":"Manual (misflag)","vehicle":"VW Taos '23","price":"129.90","addr":"","dfw":"DFW"},
+  {"user":"12nixx3","date":"Jun16","drop":"Reached scheduling, unconfirmed","vehicle":"Mercedes CLS '08","price":"226.19","addr":"","dfw":""},
   {"user":"rx9x1o","date":"Jun15","drop":"Reached /book","vehicle":"car key copy","price":"215.31","addr":"","dfw":""},
   {"user":"1o20y0d","date":"Jun16","drop":"Manual (dealer-only key)","vehicle":"Volvo XC90 '21","price":"129.90","addr":"","dfw":""},
-  {"user":"2ap78a","date":"Jun15","drop":"Manual (no key-part)","vehicle":"BMW 4-Series '21","price":"238.15","addr":"","dfw":""},
   {"user":"w2h6ar","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"534.65","addr":"","dfw":""},
   {"user":"s0b95p","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"480.52","addr":"","dfw":""},
-  {"user":"w1sbtv","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"421.08","addr":"","dfw":""},
-  {"user":"1abhzny","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"337.63","addr":"","dfw":""},
-  {"user":"evffhm","date":"Jun15","drop":"Quote viewed","vehicle":"car key copy","price":"345.31","addr":"","dfw":""},
-  {"user":"1psbn2a","date":"Jun17","drop":"Quote viewed","vehicle":"car key copy","price":"215.36","addr":"","dfw":""},
-  {"user":"flll59","date":"Jun15","drop":"Quote viewed (17 clk)","vehicle":"car key copy","price":"204.48","addr":"","dfw":""},
-  {"user":"yqmb15","date":"Jun17","drop":"Quote viewed (23 clk)","vehicle":"Genesis GV70 '24","price":"129.90","addr":"","dfw":""},
-  {"user":"1eydeqj","date":"Jun17","drop":"Quote viewed","vehicle":"Dodge Durango '05","price":"194.85","addr":"","dfw":""}
+  {"user":"1y2oz6g","date":"Jun10","drop":"Quote viewed","vehicle":"all keys lost","price":"507.68","addr":"","dfw":""}
  ],
  "insights":[
-  {"sev":"high","t":"🔥 1 booked this week + 2 still at the finish line","w":"Bruce Dunn (Scranton PA, $859) BOOKED — confirmed appointment Jun 19. Still open and worth a call: Florissant MO (scheduled a 2PM slot but NOT confirmed) and San Antonio TX (reached /book). Chase those two now."},
-  {"sev":"high","t":"3 manual losses — all luxury fobs (incl. a new reason)","w":"Mercedes ML (Aledo TX), BMW 4-Series (Maplewood NJ), Volvo XC90 (Orlando FL). New this round: the Volvo was 'dealer-only key' (must be sourced from the dealer); the other two were 'no key-part data'."},
-  {"sev":"high","t":"Luxury misclassifier still firing","w":"This round flagged Genesis GV70 (legit) and Chevy Equinox (misflag) as luxury. Mainstream makes keep getting deposits + manual routing — whitelist true luxury makes."},
-  {"sev":"med","t":"4 dropped customers are in your DFW area","w":"Arlington ($395), Aledo, Little Elm, Rowlett (TX) are all serviceable and on the recovery list — these are the ones to work first."},
-  {"sev":"med","t":"Landing-page form friction continues","w":"30, 23, 22, 20-click stall sessions again on /lp/auto — the same disabled-CTA + unresponsive-dropdown issue confirmed on the heatmap."}
+  {"sev":"high","t":"ðŸ“Š 30-day reality: 536 visitors â†’ 147 leads â†’ ~5 booked","w":"Across the month you're getting a healthy 27% landing-to-quote rate, but only ~5 confirmed appointments (Hitesh, Dudley Lee, Rayshaun, Bruce Dunn + 1) â€” roughly a 3% lead-to-booking rate. The funnel fills; it doesn't close."},
+  {"sev":"high","t":"73% bounce is consistent every single day","w":"389 of 536 visitors never reach a quote â€” and the bounce rate holds at ~73% across all 30 days. This is the biggest single drain and it's structural (the /lp/auto form), not a bad day."},
+  {"sev":"high","t":"22 manual-process losses â€” luxury + missing-part is the pattern","w":"Mercedes, BMW, Volvo, Audi, plus misflagged Chevy/VW. Two recurring root causes: luxury deposit/price gates and 'no key-part data', plus a new 'dealer-only key' case (Volvo). ~5 of these are outright misclassification BUGS (Equinox, Taos, Sonic, Tahoe)."},
+  {"sev":"high","t":"~88% of leads are OUTSIDE your DFW service area","w":"Only ~18 of 147 quote locations are DFW metro; ~117 are outside Texas entirely (PA, MO, FL, NJ, IN, AZ, MSâ€¦). If you service DFW only, the vast majority of paid leads are unfulfillable â€” the #1 thing to verify."},
+  {"sev":"med","t":"Demand is real and growing â€” Jun 10 & 14 were peak days","w":"Lead volume by day: Jun 10 (22), Jun 14 (19), Jun 16 (17), Jun 13 (11). Plenty of demand; the problem is conversion, not traffic."},
+  {"sev":"med","t":"Top vehicles skew luxury","w":"Most-quoted makes: Mercedes-Benz, Volvo, BMW, Audi, Genesis, Cadillac, plus Honda/Chevy/Kia. The luxury skew is exactly where the deposit/price/part friction bites hardest."},
+  {"sev":"low","t":"100% paid social Â· ~96% mobile Â· 0 Google","w":"All 536 visitors came from FB/IG paid ads on mobile. Zero organic/Google. A meaningful slice is internal/team test traffic that should be excluded."}
  ],
  "recs":[
-  {"pri":"high","t":"Call the 2 open finish-line leads + confirm the booking","impact":"near-money","w":"Confirm Bruce Dunn's Jun 19 appointment (Scranton, $859). Call Florissant MO (scheduled 2PM, unconfirmed) and San Antonio TX (reached /book) before they go cold."},
-  {"pri":"high","t":"Work the 4 DFW dropped customers","impact":"serviceable now","w":"Arlington ($395), Aledo (Mercedes ML), Little Elm, Rowlett — all in your service area. On the recovery list / call sheet."},
-  {"pri":"high","t":"Fix the /lp/auto form — CTA + mobile dropdowns","impact":"unblocks funnel","w":"Disabled-looking CTA + dropdowns that barely respond in the FB/IG in-app browser. Make the CTA clearly enabled and swap dropdowns for tap-friendly pickers."},
-  {"pri":"high","t":"Fix the Luxury classifier + add 'dealer-only' handling","impact":"3 losses this week","w":"Whitelist true luxury makes (Equinox/Taos/Tahoe were misflags). For genuine dealer-only keys (Volvo), show a clear 'we order from dealer, ~X days' path instead of dumping to manual."},
-  {"pri":"med","t":"Add fob key-part coverage","impact":"fewer manuals","w":"Mercedes, BMW and others keep hitting 'no key-part data'. Expand the catalog so they price automatically."},
-  {"pri":"med","t":"Move the deposit out of the quote step","impact":"abandonment","w":"$39–$101 deposits on luxury-flagged quotes correlate with drop-off. Collect at booking."},
-  {"pri":"med","t":"Add financing / anchoring on quotes over $300","impact":"high-$ leads","w":"El Paso ($535), Missouri City ($481), Lake Charles ($421), Arlington ($395) all viewed and left. Show payment plans / 'from $X'."},
-  {"pri":"low","t":"Auto-SMS the quote-viewers","impact":"recoverable","w":"Each has a saved quote link — trigger an SMS/email follow-up within the hour."},
-  {"pri":"low","t":"Exclude internal/test traffic in Clarity","impact":"clean data","w":"Filter out 6732 Dapper Drive / McKinney test and Chrome-PC team users (e.g. u8s0s7)."},
-  {"pri":"low","t":"Open a Google channel","impact":"new demand","w":"Still zero Google leads — test Google Search / Local Services Ads for 'car key replacement near me'."}
+  {"pri":"high","t":"Verify service area vs. ad geo-targeting","impact":"could be #1 fix","w":"~88% of leads are outside DFW. If DFW-only, geo-target the ads now â€” you're paying for ~130 unfulfillable leads/month. If national via partners, confirm coverage."},
+  {"pri":"high","t":"Fix the /lp/auto form (CTA + mobile dropdowns)","impact":"unblocks 73% bounce","w":"Confirmed on the heatmap: greyed/disabled CTA + dropdowns that barely respond in the FB/IG in-app browser. This is why 389/536 never reach a quote."},
+  {"pri":"high","t":"Fix the Luxury classifier + add 'dealer-only' path","impact":"~5 bug-losses/period","w":"Whitelist true luxury makes (Equinox/Taos/Sonic/Tahoe were misflags). For real dealer-only keys (Volvo), show 'we order from dealer, ~X days' instead of dumping to manual."},
+  {"pri":"high","t":"Work the DFW recovery list + 2 open finish-line leads","impact":"near-money","w":"7 DFW dropped customers are serviceable now (Arlington $395, Aledo, Little Elm, Rowlett, Dallas, Garland, Arlington-Taos). Plus call Florissant MO (scheduled, unconfirmed) and San Antonio (/book)."},
+  {"pri":"med","t":"Move deposits to booking + add financing on >$300","impact":"abandonment","w":"$39â€“$200 deposits and $400â€“$2,464 quotes drive drop-off. Collect deposit at booking; show payment plans / 'from $X' on high-ticket keys."},
+  {"pri":"med","t":"Expand fob key-part coverage","impact":"fewer manuals","w":"Mercedes, BMW, Audi, Volvo, VW keep hitting 'no key-part data'. Add these to the catalog so they auto-price."},
+  {"pri":"med","t":"Restore data APIs & speed up pricing","impact":"speed = conversion","w":"batchdata (403), smarty (402), placekey (401) failing on every quote; one fetch took 8.3s."},
+  {"pri":"low","t":"Auto-SMS the 113 quote-viewers","impact":"recoverable","w":"Each has a saved quote link â€” trigger SMS/email within the hour."},
+  {"pri":"low","t":"Exclude internal/test traffic in Clarity","impact":"clean data","w":"Filter the known internal test address + Chrome-PC team users so numbers reflect real customers."},
+  {"pri":"low","t":"Open a Google channel","impact":"new demand","w":"Zero Google leads â€” test Google Search / LSA for high-intent 'car key replacement near me'."}
  ]
 };
 const $ = (s)=>document.querySelector(s);
 document.getElementById('stamp').innerHTML =
-  'Window: <b>'+DATA.window+'</b><br>Generated: '+DATA.generated;
+  'Window: <b>'+DATA.window+'</b><br><span style="color:var(--green);font-weight:700">ðŸ•’ Last updated: '+DATA.generated+'</span>';
 
 // KPIs + date-filter helpers
 const norm=s=>(s||'').replace(/\s+/g,'');
 const dOf=s=>(s||'').split(' ')[0];
+const clk=u=>'https://clarity.microsoft.com/projects/view/vnzmf1we2r/impressions?date=Last%2030%20days&UserId=is%3B'+encodeURIComponent((u||'').replace(/[^\w]/g,''));
+const ADDR={};
 const pq=q=>parseFloat(String(q||'').replace(/,/g,''))||0;
 const fmtK=n=>'$'+(n>=1000?(n/1000).toFixed(1)+'K':Math.round(n));
 function renderKpis(k){const kdefs=[
@@ -226,7 +239,7 @@ const bydayChart=new Chart($('#byday'),{type:'bar',data:{labels:Object.keys(DATA
 // loss table
 $('#lossT tbody').innerHTML=DATA.losses.map(r=>`<tr>
  <td>${r.user}</td><td>${r.vehicle}</td><td>${r.service}</td>
- <td class="right">$${r.quote}</td><td class="right ${r.dep!=='0'?'amber':'mut'}">${r.dep!=='0'?'$'+r.dep:'—'}</td>
+ <td class="right">$${r.quote}</td><td class="right ${r.dep!=='0'?'amber':'mut'}">${r.dep!=='0'?'$'+r.dep:'â€”'}</td>
  <td>${r.lux}</td><td>${r.cause}</td><td class="mut">${r.beh}</td></tr>`).join('');
 
 // leads table
@@ -234,9 +247,10 @@ const pc={'BOOKED':'p-book','MANUAL-PROCESS':'p-manual','Reached /book':'p-near'
 $('#leadT tbody').innerHTML=DATA.leads.map(r=>{
  const cls=pc[r.outcome]||'p-view';
  const d=(r.time||'').split(' ')[0];
- return `<tr data-date="${d}"><td class="mut">${r.time}</td><td>${r.user}</td><td>${r.src}</td><td>${r.dev}</td>
- <td>${r.vehicle||'—'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
- <td class="right">${r.quote?'$'+r.quote:'—'}</td><td>${r.status||'—'}</td>
+ const addr=ADDR[r.user]||r.loc||'â€”';
+ return `<tr data-date="${d}"><td class="mut">${r.time}</td><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">â–¶ watch</a></td><td>${r.src}</td><td>${r.dev}</td>
+ <td>${r.vehicle||'â€”'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
+ <td class="right">${r.quote?'$'+r.quote:'â€”'}</td><td class="${ADDR[r.user]?'':'mut'}">${addr}</td>
  <td class="${r.flag?'flag':'mut'}">${r.notes||''}</td></tr>`}).join('');
 
 // ---------- date filter: recompute KPIs + funnel/outcomes/by-day + table ----------
@@ -261,7 +275,8 @@ function applyRange(sel){            // sel = null for All, else array of normal
  bydayChart.data.labels=bdk; bydayChart.data.datasets[0].data=bdk.map(d=>DATA.byDay[d].leads); bydayChart.data.datasets[1].data=bdk.map(d=>DATA.byDay[d].bounces); bydayChart.update();
  const rows=[...document.querySelectorAll('#leadT tbody tr')]; let n=0;
  rows.forEach(t=>{const show=isAll||days.includes(t.dataset.date); t.style.display=show?'':'none'; if(show)n++;});
- const lc=document.getElementById('leadCount'); if(lc) lc.textContent='— showing '+n+' of '+rows.length;
+ const lc=document.getElementById('leadCount'); if(lc) lc.textContent='â€” showing '+n+' of '+rows.length;
+ [...document.querySelectorAll('#dropT tbody tr')].forEach(t=>{ t.style.display=(isAll||days.includes(t.dataset.date))?'':'none'; });
 }
 (function(){
  const wrap=document.getElementById('leadFilter'); if(!wrap) return;
@@ -275,7 +290,7 @@ function applyRange(sel){            // sel = null for All, else array of normal
 })();
 
 // dropped customers recovery list
-$('#dropT tbody').innerHTML=(DATA.dropped||[]).slice().sort((a,b)=>((b.dfw==='DFW')?1:0)-((a.dfw==='DFW')?1:0)).map(r=>`<tr${r.dfw==='DFW'?' style="background:rgba(52,211,153,.08)"':''}><td>${r.user}</td><td class="mut">${r.date}</td><td>${r.drop}</td><td>${r.vehicle||'—'}</td><td class="right">${r.price?'$'+r.price:'—'}</td><td class="${r.addr?'':'mut'}">${r.addr||'—'}</td><td class="${r.dfw==='DFW'?'green':'mut'}">${r.dfw||'outside'}</td></tr>`).join('');
+$('#dropT tbody').innerHTML=(DATA.dropped||[]).slice().sort((a,b)=>((b.dfw==='DFW')?1:0)-((a.dfw==='DFW')?1:0)).map(r=>`<tr data-date="${dOf(r.date)}"${r.dfw==='DFW'?' style="background:rgba(52,211,153,.08)"':''}><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">â–¶</a></td><td class="mut">${r.date}</td><td>${r.drop}</td><td>${r.vehicle||'â€”'}</td><td class="right">${r.price?'$'+r.price:'â€”'}</td><td class="${r.addr?'':'mut'}">${r.addr||'â€”'}</td><td class="${r.dfw==='DFW'?'green':'mut'}">${r.dfw||'outside'}</td></tr>`).join('');
 
 // recommendations
 $('#insights').innerHTML=(DATA.insights||[]).map(x=>`<div class="rec ${x.sev||''}"><b>${x.t}</b><div class="why">${x.w}</div></div>`).join('');
@@ -283,6 +298,7 @@ $('#recs').innerHTML=DATA.recs.map(r=>`<div class="rec ${r.pri}"><b>${r.t}</b><s
 </script>
 </body>
 </html>
+
 
 
 
