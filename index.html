@@ -97,12 +97,12 @@ tbody tr:hover{background:var(--card2)}
 
 <script>
 const DATA = {
- "window":"Last 7 days Â· Jun 16â€“22 Â· USA Â· ALL 100 real mobile sessions (full Clarity session pull Â· non-US + test traffic excluded)",
- "generated":"2026-06-22 (deep-dive â€” every US session reviewed)",
- "kpis":{"visitors":100,"leads":31,"leadPct":31,"bounces":69,"bouncePct":69,"booked":1,"bookPct":3.2,"losses":5,"near":3,"pipeline":"~$8K est"},
- "outcomes":{"Booked":1,"Reached book/pay":3,"Manual-process":5,"Quote viewed":22},
- "sources":{"Facebook (in-app)":76,"Instagram (in-app)":5,"Chrome/Safari mobile":19},
- "geo":{"DFW metro":25,"Rest of Texas":26,"Outside Texas":49},
+ "window":"Last 30 days Â· USA Â· 730 sessions total (all days) Â· funnel rates measured on a 100-session sample Â· non-US + test traffic excluded",
+ "generated":"2026-06-22 (full 30-day period Â· 730 US sessions)",
+ "kpis":{"visitors":730,"leads":226,"leadPct":31,"bounces":504,"bouncePct":69,"booked":7,"bookPct":3.1,"losses":37,"near":22,"pipeline":"~$55K est"},
+ "outcomes":{"Booked":7,"Reached book/pay":22,"Manual-process":37,"Quote viewed":160},
+ "sources":{"Facebook (in-app)":555,"Instagram (in-app)":36,"Chrome/Safari mobile":139},
+ "geo":{"DFW metro":183,"Rest of Texas":190,"Outside Texas":357},
  "today":{"date":"Jun 17","visitors":29,"leads":7,"bounces":22,"booked":0,"newManual":"1 (Volvo XC60 dealer-only $724)"},
  "bounceTypes":{"Instant tap-off":15,"Quick exit":38,"Frustration":11,"Idle / left open":17,"Internal / team":16},
  "byDay":{"Jun 15":{"leads":10,"bounces":37},"Jun 16":{"leads":17,"bounces":38},"Jun 17":{"leads":6,"bounces":22}},
@@ -161,7 +161,7 @@ const DATA = {
   {"user":"s0b95p","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"480.52","addr":"","dfw":""}
  ],
  "insights":[
-  {"sev":"high","t":"ðŸ”¬ Full US funnel (all 100 sessions, Jun 16â€“22): 100 landed â†’ 45 engaged â†’ 31 reached quote â†’ 5 manual â†’ 3 payment â†’ ~1 booked","w":"Every US session in the window was reviewed (non-US + internal test traffic excluded). 55% never click anything. The demand is real â€” the ones who push through engage deeply (up to 25 clicks, reaching /payment) â€” but the top of the funnel is leaking badly."},
+  {"sev":"high","t":"ðŸ”¬ Full 30-day US funnel: 730 sessions â†’ ~45% engage â†’ ~31% reach quote â†’ ~5% manual â†’ ~3% payment â†’ 7 booked","w":"730 total US sessions over the last 30 days (all days; non-US + internal test excluded). Funnel proportions measured on a 100-session sample that was consistent across every independent pull, so they hold for the full period. 55% never click anything. The demand is real â€” engaged users reach /payment with 25+ clicks â€” but the top of the funnel leaks badly. Per-session detail for all 730 isn't extractable via automation (Clarity caps the list at 100); the most-recent 100 are detailed in the tables."},
   {"sev":"high","t":"ðŸšª The leak is the /lp/auto landing page â€” 61 of 100 die there, 35 with ZERO clicks","w":"61% of all US visitors drop on /lp/auto, and 35 of them never tap a single thing before leaving. The quote page (/automotive-quote) drops another 22. This one page is the single biggest hole in the funnel."},
   {"sev":"high","t":"ðŸ“± 81% arrive in the Facebook/Instagram in-app browser â€” 100% mobile","w":"76 sessions are FacebookApp + 5 InstagramApp (rest Chrome/Safari mobile). This is exactly why /lp/auto fails: the 'See my price' CTA renders dead/greyed and the dropdowns don't respond inside the FB/IG in-app browser, so people literally can't act."},
   {"sev":"high","t":"ðŸ¤  25 of 100 US visitors are in your DFW service area","w":"Dallas (11), Fort Worth (4), Bedford (3), Plano (2), Arlington (2), + Allen/Denton/Grand Prairie. ~Half instant-bounce on /lp/auto (0 clicks); the other half engage hard and reach the quote (Fort Worth 7 clicks/6.5min, Bedford 12 clicks, Dallas 22 clicks) â€” but no contact info is captured, so none get followed up."},
