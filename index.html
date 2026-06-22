@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zelli â€” USA Lead Dashboard</title>
+<title>Zelli — USA Lead Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#0f1420;--card:#1a2232;--card2:#212c40;--ink:#e8edf6;--mut:#94a3b8;--line:#2c3a52;
@@ -51,54 +51,54 @@ tbody tr:hover{background:var(--card2)}
 </head>
 <body>
 <div class="head">
-  <div><h1>ZELLI Â· <span>USA Lead Dashboard</span> <span style='font-size:12px;color:#34d399;border:1px solid #2c3a52;padding:2px 8px;border-radius:8px'>SHAREABLE Â· no customer details</span></h1>
-  <div class="sub">Microsoft Clarity Ã— Zelli Quotes Â· United States market Â· aggregate view (addresses removed)</div></div>
+  <div><h1>ZELLI · <span>USA Lead Dashboard</span> <span style='font-size:12px;color:#34d399;border:1px solid #2c3a52;padding:2px 8px;border-radius:8px'>SHAREABLE - no customer details</span></h1>
+  <div class="sub">Microsoft Clarity × Zelli Quotes · United States market - aggregate view (addresses removed)</div></div>
   <div class="stamp" id="stamp"></div>
 </div>
 <div class="bar"></div>
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px">
-  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">ðŸ—“ Detailed-sample day filter <span style="color:var(--amber);text-transform:none">â€” KPIs above cover all 30 days / 730 sessions; the per-lead detail below is the most-recent sample only</span></span>
+  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">🗓 Detailed-sample day filter <span style="color:var(--amber);text-transform:none">— KPIs above cover all 30 days / 730 sessions; the per-lead detail below is the most-recent sample only</span></span>
   <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 <div class="kpis" id="kpis"></div>
 
 <div class="grid">
-  <div class="card col12" style="border-left:3px solid var(--cyan)"><h2>ðŸ”‘ Key insights</h2><div id="insights"></div></div>
+  <div class="card col12" style="border-left:3px solid var(--cyan)"><h2>🔑 Key insights</h2><div id="insights"></div></div>
   <div class="card col4"><h2>Funnel</h2><canvas id="funnel"></canvas></div>
   <div class="card col4"><h2>Lead Outcomes</h2><canvas id="outcomes"></canvas></div>
   <div class="card col4"><h2>Traffic Source</h2><canvas id="sources"></canvas></div>
 
   <div class="card col4"><h2>Lead geography (vs DFW service area)</h2><canvas id="geo"></canvas></div>
   <div class="card col6"><h2>Why visitors bounced</h2><canvas id="bounce"></canvas></div>
-  <div class="card col6"><h2>Lead volume by day â€” recent detailed sample (not the full 30 days)</h2><canvas id="byday"></canvas></div>
+  <div class="card col6"><h2>Lead volume by day — recent detailed sample (not the full 30 days)</h2><canvas id="byday"></canvas></div>
 
-  <div class="card col12"><h2>Manual-process losses â€” engaged leads we lost (by root cause)</h2>
+  <div class="card col12"><h2>Manual-process losses — engaged leads we lost (by root cause)</h2>
     <div class="scroll"><table id="lossT"><thead><tr>
       <th>User</th><th>Vehicle</th><th>Service</th><th class="right">Quote</th><th class="right">Deposit</th><th>Luxury</th><th>Root cause</th><th>Behavior</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>Detailed lead records â€” most-recent sample (full-period total â‰ˆ226 quote-reachers; see KPIs) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
+  <div class="card col12"><h2>Detailed lead records — most-recent sample (full-period total ≈226 quote-reachers; see KPIs) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
     <div class="scroll"><table id="leadT"><thead><tr>
-      <th>Date</th><th>User</th><th>â–¶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
+      <th>Date</th><th>User</th><th>▶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12" style="border-left:3px solid var(--purple)"><h2>ðŸ“‡ Dropped customers â€” recovery list (service address)</h2>
+  <div class="card col12" style="border-left:3px solid var(--purple)"><h2>📇 Dropped customers — recovery list (service address)</h2>
     <div class="scroll"><table id="dropT"><thead><tr>
-      <th>User</th><th>â–¶ Video</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
+      <th>User</th><th>▶ Video</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>Recommendations â€” how to proceed</h2><div id="recs"></div></div>
+  <div class="card col12"><h2>Recommendations — how to proceed</h2><div id="recs"></div></div>
 </div>
 
-<div class="foot">Auto-generated snapshot Â· refresh each morning Â· data window shown above</div>
+<div class="foot">Auto-generated snapshot · refresh each morning · data window shown above</div>
 
 <script>
 const DATA = {
- "window":"Last 30 days Â· USA Â· 730 sessions total (all days) Â· funnel rates measured on a 100-session sample Â· non-US + test traffic excluded",
- "generated":"2026-06-22 (full 30-day period Â· 730 US sessions)",
+ "window":"Last 30 days · USA · 730 sessions total (all days) · funnel rates measured on a 100-session sample · non-US + test traffic excluded",
+ "generated":"2026-06-22 (full 30-day period · 730 US sessions)",
  "kpis":{"visitors":730,"leads":226,"leadPct":31,"bounces":504,"bouncePct":69,"booked":7,"bookPct":3.1,"losses":37,"near":22,"pipeline":"~$55K est"},
  "outcomes":{"Booked":7,"Reached book/pay":22,"Manual-process":37,"Quote viewed":160},
  "sources":{"Facebook (in-app)":555,"Instagram (in-app)":36,"Chrome/Safari mobile":139},
@@ -119,34 +119,34 @@ const DATA = {
  "leads":[
   {"time":"Jun17","user":"1lcc1fy","src":"FB","dev":"Mobile","vehicle":"2021 Volvo XC60","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"724.08","loc":"","status":"Completed","notes":"dealer-only key + $724 price shock","flag":1},
   {"time":"Jun17","user":"un480f","src":"FB","dev":"Edge PC","vehicle":"2015 Chevy Camaro","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":"LUX MISFLAG + $65 dep","flag":1},
-  {"time":"Jun17","user":"yqmb15","src":"FB","dev":"Mobile","vehicle":"2024 Genesis GV70","service":"Fob prog","outcome":"Quote viewed","quote":"129.90","loc":"","status":"Completed","notes":"23 clk Â· luxury","flag":1},
+  {"time":"Jun17","user":"yqmb15","src":"FB","dev":"Mobile","vehicle":"2024 Genesis GV70","service":"Fob prog","outcome":"Quote viewed","quote":"129.90","loc":"","status":"Completed","notes":"23 clk · luxury","flag":1},
   {"time":"Jun17","user":"1eydeqj","src":"FB","dev":"Mobile","vehicle":"2005 Dodge Durango","service":"Car key copy","outcome":"Quote viewed","quote":"194.85","loc":"","status":"Completed","notes":"left in 10s"},
   {"time":"Jun17","user":"1psbn2a","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":""},
-  {"time":"Jun17","user":"1fysdsx","src":"FB","dev":"Mobile","vehicle":"","service":"â€”","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"1te73c5","src":"FB","dev":"Firefox","vehicle":"","service":"Car key copy","outcome":"BOOKED","quote":"859.29","loc":"","status":"Confirmed Jun 19","notes":"âœ“ Bruce Dunn â€” booked!"},
+  {"time":"Jun17","user":"1fysdsx","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
+  {"time":"Jun16","user":"1te73c5","src":"FB","dev":"Firefox","vehicle":"","service":"Car key copy","outcome":"BOOKED","quote":"859.29","loc":"","status":"Confirmed Jun 19","notes":"✓ Bruce Dunn — booked!"},
   {"time":"Jun16","user":"12nixx3","src":"FB","dev":"Mobile","vehicle":"Mercedes CLS '08","service":"Key copy prog","outcome":"Reached /payment","quote":"226.19","loc":"","status":"Completed","notes":"scheduled 2PM, unconfirmed","flag":1},
   {"time":"Jun16","user":"1o20y0d","src":"Direct","dev":"Chrome PC","vehicle":"2021 Volvo XC90","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"dealer-only key","flag":1},
   {"time":"Jun16","user":"b49s0s","src":"FB","dev":"Mobile","vehicle":"2012 Mercedes ML","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
   {"time":"Jun16","user":"w2h6ar","src":"Direct","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"534.65","loc":"","status":"Completed","notes":"high $"},
   {"time":"Jun16","user":"s0b95p","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"480.52","loc":"","status":"Completed","notes":""},
   {"time":"Jun16","user":"w1sbtv","src":"Direct","dev":"MobSafari","vehicle":"2011 Ford Edge","service":"Car key copy","outcome":"Quote viewed","quote":"421.08","loc":"","status":"Completed","notes":"LUX MISFLAG $421 Ford","flag":1},
-  {"time":"Jun16","user":"6be35y","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"395.00","loc":"","status":"Completed","notes":"DFW Â· $395","flag":1},
+  {"time":"Jun16","user":"6be35y","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"395.00","loc":"","status":"Completed","notes":"DFW · $395","flag":1},
   {"time":"Jun16","user":"1abhzny","src":"FB","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"337.63","loc":"","status":"Completed","notes":"luxury +$101 dep"},
   {"time":"Jun16","user":"1ooufzp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"216.39","loc":"","status":"Completed","notes":"DFW"},
-  {"time":"Jun16","user":"1gnzduh","src":"FB","dev":"Mobile","vehicle":"GM smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"20 clk Â· 5 pg"},
-  {"time":"Jun16","user":"16m6msx","src":"FB","dev":"Mobile","vehicle":"","service":"â€”","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"akctme","src":"FB","dev":"Mobile","vehicle":"","service":"â€”","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"c2l4sy","src":"FB","dev":"Mobile","vehicle":"","service":"â€”","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun15","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clk Â· hit /book","flag":1},
+  {"time":"Jun16","user":"1gnzduh","src":"FB","dev":"Mobile","vehicle":"GM smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"20 clk · 5 pg"},
+  {"time":"Jun16","user":"16m6msx","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
+  {"time":"Jun16","user":"akctme","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
+  {"time":"Jun16","user":"c2l4sy","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
+  {"time":"Jun15","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clk · hit /book","flag":1},
   {"time":"Jun15","user":"2ap78a","src":"IG","dev":"Mobile","vehicle":"BMW 4-Series '21","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"238.15","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
   {"time":"Jun15","user":"evffhm","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"345.31","loc":"","status":"Completed","notes":"luxury +$104 dep"},
   {"time":"Jun15","user":"fwjl32","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"226.19","loc":"","status":"Completed","notes":"luxury +$68 dep"},
   {"time":"Jun15","user":"860arp","src":"FB","dev":"Mobile","vehicle":"2014 Chevy Impala","service":"Car key copy","outcome":"Quote viewed","quote":"197.99","loc":"","status":"Completed","notes":"LUX MISFLAG + $59 dep","flag":1},
   {"time":"Jun15","user":"flll59","src":"FB","dev":"Mobile","vehicle":"2023 Ford Explorer","service":"Car key copy","outcome":"Quote viewed","quote":"204.48","loc":"","status":"Completed","notes":"LUX MISFLAG","flag":1},
-  {"time":"Jun15","user":"iho7dw","src":"FB","dev":"Mobile","vehicle":"CDJ smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"15 clk Â· 6 pg"},
+  {"time":"Jun15","user":"iho7dw","src":"FB","dev":"Mobile","vehicle":"CDJ smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"15 clk · 6 pg"},
   {"time":"Jun15","user":"1ytr7ev","src":"FB","dev":"Mobile","vehicle":"2008 Lexus ES350","service":"Combo copy prog","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"luxury (correct)"},
-  {"time":"Jun15","user":"t43k8a","src":"FB","dev":"Mobile","vehicle":"","service":"â€”","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun15","user":"u8s0s7","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Lockout","outcome":"Quote viewed","quote":"227.33","loc":"","status":"INTERNAL/TEST","notes":"âš  internal test addr â€” excluded from pipeline","flag":1}
+  {"time":"Jun15","user":"t43k8a","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
+  {"time":"Jun15","user":"u8s0s7","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Lockout","outcome":"Quote viewed","quote":"227.33","loc":"","status":"INTERNAL/TEST","notes":"⚠ internal test addr — excluded from pipeline","flag":1}
  ],
  "dropped":[
   {"user":"6be35y","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"395.00","addr":"","dfw":"DFW"},
@@ -161,19 +161,19 @@ const DATA = {
   {"user":"s0b95p","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"480.52","addr":"","dfw":""}
  ],
  "insights":[
-  {"sev":"high","t":"ðŸ”¬ Full 30-day US funnel: 730 sessions â†’ ~45% engage â†’ ~31% reach quote â†’ ~5% manual â†’ ~3% payment â†’ 7 booked","w":"730 total US sessions over the last 30 days (all days; non-US + internal test excluded). Funnel proportions measured on a 100-session sample that was consistent across every independent pull, so they hold for the full period. 55% never click anything. The demand is real â€” engaged users reach /payment with 25+ clicks â€” but the top of the funnel leaks badly. Per-session detail for all 730 isn't extractable via automation (Clarity caps the list at 100); the most-recent 100 are detailed in the tables."},
-  {"sev":"high","t":"ðŸšª The leak is the /lp/auto landing page â€” 61 of 100 die there, 35 with ZERO clicks","w":"61% of all US visitors drop on /lp/auto, and 35 of them never tap a single thing before leaving. The quote page (/automotive-quote) drops another 22. This one page is the single biggest hole in the funnel."},
-  {"sev":"high","t":"ðŸ“± 81% arrive in the Facebook/Instagram in-app browser â€” 100% mobile","w":"76 sessions are FacebookApp + 5 InstagramApp (rest Chrome/Safari mobile). This is exactly why /lp/auto fails: the 'See my price' CTA renders dead/greyed and the dropdowns don't respond inside the FB/IG in-app browser, so people literally can't act."},
-  {"sev":"high","t":"ðŸ¤  25 of 100 US visitors are in your DFW service area","w":"Dallas (11), Fort Worth (4), Bedford (3), Plano (2), Arlington (2), + Allen/Denton/Grand Prairie. ~Half instant-bounce on /lp/auto (0 clicks); the other half engage hard and reach the quote (Fort Worth 7 clicks/6.5min, Bedford 12 clicks, Dallas 22 clicks) â€” but no contact info is captured, so none get followed up."},
+  {"sev":"high","t":"🔬 Full 30-day US funnel: 730 sessions → ~45% engage → ~31% reach quote → ~5% manual → ~3% payment → 7 booked","w":"730 total US sessions over the last 30 days (all days; non-US + internal test excluded). Funnel proportions measured on a 100-session sample that was consistent across every independent pull, so they hold for the full period. 55% never click anything. The demand is real — engaged users reach /payment with 25+ clicks — but the top of the funnel leaks badly. Per-session detail for all 730 isn't extractable via automation (Clarity caps the list at 100); the most-recent 100 are detailed in the tables."},
+  {"sev":"high","t":"🚪 The leak is the /lp/auto landing page — 61 of 100 die there, 35 with ZERO clicks","w":"61% of all US visitors drop on /lp/auto, and 35 of them never tap a single thing before leaving. The quote page (/automotive-quote) drops another 22. This one page is the single biggest hole in the funnel."},
+  {"sev":"high","t":"📱 81% arrive in the Facebook/Instagram in-app browser — 100% mobile","w":"76 sessions are FacebookApp + 5 InstagramApp (rest Chrome/Safari mobile). This is exactly why /lp/auto fails: the 'See my price' CTA renders dead/greyed and the dropdowns don't respond inside the FB/IG in-app browser, so people literally can't act."},
+  {"sev":"high","t":"🤠 25 of 100 US visitors are in your DFW service area","w":"Dallas (11), Fort Worth (4), Bedford (3), Plano (2), Arlington (2), + Allen/Denton/Grand Prairie. ~Half instant-bounce on /lp/auto (0 clicks); the other half engage hard and reach the quote (Fort Worth 7 clicks/6.5min, Bedford 12 clicks, Dallas 22 clicks) — but no contact info is captured, so none get followed up."},
   {"sev":"med","t":"Luxury classifier still over-flagging mainstream cars (Camaro, Ford Edge, Impala, Explorer)","w":"From the Zelli-matched detail below: 4 domestic cars tagged Luxury=Yes with deposit gates, plus genuine dealer-only routing (Volvo). Needs a make/model whitelist."},
-  {"sev":"low","t":"Data-provider APIs still failing on every quote","w":"batchdata, smarty (HTTP 402) and placekey (HTTP 401) failed on every quote pulled this week â€” property enrichment is running degraded."}
+  {"sev":"low","t":"Data-provider APIs still failing on every quote","w":"batchdata, smarty (HTTP 402) and placekey (HTTP 401) failed on every quote pulled this week — property enrichment is running degraded."}
  ],
  "recs":[
   {"pri":"high","t":"Fix the Luxury classifier (add a make/model whitelist)","impact":"4 misflags this week","w":"Camaro, Ford Edge, Impala, Explorer were all misflagged Luxury and some got deposit gates. Whitelist mainstream domestic makes; keep true luxury (Mercedes, BMW, Volvo, Lexus, Genesis) gated. Add a real 'dealer-only' path (Volvo) that says 'we order from dealer, ~X days' instead of dumping to manual."},
   {"pri":"high","t":"Verify service area vs. ad geo-targeting","impact":"could be #1 fix","w":"~79% of this week's leads are outside DFW and 63% outside Texas. If DFW-only, geo-target the ads now; if national via partners, confirm coverage."},
   {"pri":"high","t":"Work the DFW recovery list + 2 finish-line leads","impact":"near-money","w":"5 DFW quote-viewers are serviceable now (Arlington $395, Little Elm, Aledo, Rowlett, Aubrey). Plus call Florissant MO (scheduled, unconfirmed) and San Antonio (/book) before they go cold."},
-  {"pri":"high","t":"Fix the /lp/auto form (CTA + mobile dropdowns)","impact":"unblocks 75% bounce","w":"97 of 130 visitors never reach a quote â€” the greyed CTA + unresponsive dropdowns in the FB/IG in-app browser are the structural cause."},
-  {"pri":"med","t":"Move deposits to booking + financing on >$300","impact":"abandonment","w":"$59â€“$125 deposits and $400â€“$724 quotes drive drop-off. Collect deposit at booking; show 'from $X' on higher-ticket keys."},
+  {"pri":"high","t":"Fix the /lp/auto form (CTA + mobile dropdowns)","impact":"unblocks 75% bounce","w":"97 of 130 visitors never reach a quote — the greyed CTA + unresponsive dropdowns in the FB/IG in-app browser are the structural cause."},
+  {"pri":"med","t":"Move deposits to booking + financing on >$300","impact":"abandonment","w":"$59–$125 deposits and $400–$724 quotes drive drop-off. Collect deposit at booking; show 'from $X' on higher-ticket keys."},
   {"pri":"med","t":"Restore data APIs (batchdata / smarty 402 / placekey 401)","impact":"speed + accuracy","w":"All three property-data providers are failing on every quote; quotes are running on degraded data."},
   {"pri":"low","t":"Exclude internal/test traffic in Clarity","impact":"clean data","w":"Internal/team bounces + the known internal test quote (u8s0s7) are still in the raw counts. Filter the known internal test address and Chrome-PC team users."}
  ]
@@ -181,7 +181,7 @@ const DATA = {
 
 const $ = (s)=>document.querySelector(s);
 document.getElementById('stamp').innerHTML =
-  'Window: <b>'+DATA.window+'</b><br><span style="color:var(--green);font-weight:700">ðŸ•’ Last updated: '+DATA.generated+'</span>';
+  'Window: <b>'+DATA.window+'</b><br><span style="color:var(--green);font-weight:700">🕒 Last updated: '+DATA.generated+'</span>';
 
 // KPIs + date-filter helpers
 const norm=s=>(s||'').replace(/\s+/g,'');
@@ -231,7 +231,7 @@ const bydayChart=new Chart($('#byday'),{type:'bar',data:{labels:Object.keys(DATA
 // loss table
 $('#lossT tbody').innerHTML=DATA.losses.map(r=>`<tr>
  <td>${r.user}</td><td>${r.vehicle}</td><td>${r.service}</td>
- <td class="right">$${r.quote}</td><td class="right ${r.dep!=='0'?'amber':'mut'}">${r.dep!=='0'?'$'+r.dep:'â€”'}</td>
+ <td class="right">$${r.quote}</td><td class="right ${r.dep!=='0'?'amber':'mut'}">${r.dep!=='0'?'$'+r.dep:'—'}</td>
  <td>${r.lux}</td><td>${r.cause}</td><td class="mut">${r.beh}</td></tr>`).join('');
 
 // leads table
@@ -239,10 +239,10 @@ const pc={'BOOKED':'p-book','MANUAL-PROCESS':'p-manual','Reached /book':'p-near'
 $('#leadT tbody').innerHTML=DATA.leads.map(r=>{
  const cls=pc[r.outcome]||'p-view';
  const d=(r.time||'').split(' ')[0];
- const addr=ADDR[r.user]||r.loc||'â€”';
- return `<tr data-date="${d}"><td class="mut">${r.time}</td><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">â–¶ watch</a></td><td>${r.src}</td><td>${r.dev}</td>
- <td>${r.vehicle||'â€”'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
- <td class="right">${r.quote?'$'+r.quote:'â€”'}</td><td class="${ADDR[r.user]?'':'mut'}">${addr}</td>
+ const addr=ADDR[r.user]||r.loc||'—';
+ return `<tr data-date="${d}"><td class="mut">${r.time}</td><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">▶ watch</a></td><td>${r.src}</td><td>${r.dev}</td>
+ <td>${r.vehicle||'—'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
+ <td class="right">${r.quote?'$'+r.quote:'—'}</td><td class="${ADDR[r.user]?'':'mut'}">${addr}</td>
  <td class="${r.flag?'flag':'mut'}">${r.notes||''}</td></tr>`}).join('');
 
 // ---------- date filter: recompute KPIs + funnel/outcomes/by-day + table ----------
@@ -267,7 +267,7 @@ function applyRange(sel){            // sel = null for All, else array of normal
  bydayChart.data.labels=bdk; bydayChart.data.datasets[0].data=bdk.map(d=>DATA.byDay[d].leads); bydayChart.data.datasets[1].data=bdk.map(d=>DATA.byDay[d].bounces); bydayChart.update();
  const rows=[...document.querySelectorAll('#leadT tbody tr')]; let n=0;
  rows.forEach(t=>{const show=isAll||days.includes(t.dataset.date); t.style.display=show?'':'none'; if(show)n++;});
- const lc=document.getElementById('leadCount'); if(lc) lc.textContent='â€” showing '+n+' of '+rows.length;
+ const lc=document.getElementById('leadCount'); if(lc) lc.textContent='— showing '+n+' of '+rows.length;
  [...document.querySelectorAll('#dropT tbody tr')].forEach(t=>{ t.style.display=(isAll||days.includes(t.dataset.date))?'':'none'; });
 }
 (function(){
@@ -282,7 +282,7 @@ function applyRange(sel){            // sel = null for All, else array of normal
 })();
 
 // dropped customers recovery list
-$('#dropT tbody').innerHTML=(DATA.dropped||[]).slice().sort((a,b)=>((b.dfw==='DFW')?1:0)-((a.dfw==='DFW')?1:0)).map(r=>`<tr data-date="${dOf(r.date)}"${r.dfw==='DFW'?' style="background:rgba(52,211,153,.08)"':''}><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">â–¶</a></td><td class="mut">${r.date}</td><td>${r.drop}</td><td>${r.vehicle||'â€”'}</td><td class="right">${r.price?'$'+r.price:'â€”'}</td><td class="${r.addr?'':'mut'}">${r.addr||'â€”'}</td><td class="${r.dfw==='DFW'?'green':'mut'}">${r.dfw||'outside'}</td></tr>`).join('');
+$('#dropT tbody').innerHTML=(DATA.dropped||[]).slice().sort((a,b)=>((b.dfw==='DFW')?1:0)-((a.dfw==='DFW')?1:0)).map(r=>`<tr data-date="${dOf(r.date)}"${r.dfw==='DFW'?' style="background:rgba(52,211,153,.08)"':''}><td>${r.user}</td><td><a href="${clk(r.user)}" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:600">▶</a></td><td class="mut">${r.date}</td><td>${r.drop}</td><td>${r.vehicle||'—'}</td><td class="right">${r.price?'$'+r.price:'—'}</td><td class="${r.addr?'':'mut'}">${r.addr||'—'}</td><td class="${r.dfw==='DFW'?'green':'mut'}">${r.dfw||'outside'}</td></tr>`).join('');
 
 // recommendations
 $('#insights').innerHTML=(DATA.insights||[]).map(x=>`<div class="rec ${x.sev||''}"><b>${x.t}</b><div class="why">${x.w}</div></div>`).join('');
@@ -290,7 +290,6 @@ $('#recs').innerHTML=DATA.recs.map(r=>`<div class="rec ${r.pri}"><b>${r.t}</b><s
 </script>
 </body>
 </html>
-
 
 
 
