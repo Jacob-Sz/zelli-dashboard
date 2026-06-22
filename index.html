@@ -57,7 +57,7 @@ tbody tr:hover{background:var(--card2)}
 </div>
 <div class="bar"></div>
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px">
-  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">🗓 Detailed-sample day filter <span style="color:var(--amber);text-transform:none">— KPIs above cover all 30 days / 730 sessions; the per-lead detail below is the most-recent sample only</span></span>
+  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">🗓 Filter the DFW leads by day <span style="color:var(--amber);text-transform:none">— the all-days quote volume is in the chart below; KPIs cover all 638 real quotes</span></span>
   <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 <div class="kpis" id="kpis"></div>
@@ -70,7 +70,7 @@ tbody tr:hover{background:var(--card2)}
 
   <div class="card col4"><h2>Lead geography (vs DFW service area)</h2><canvas id="geo"></canvas></div>
   <div class="card col6"><h2>Why visitors bounced</h2><canvas id="bounce"></canvas></div>
-  <div class="card col6"><h2>Lead volume by day — recent detailed sample (not the full 30 days)</h2><canvas id="byday"></canvas></div>
+  <div class="card col6"><h2>📅 Real quotes per day — June campaign (all days, test traffic excluded)</h2><canvas id="byday"></canvas></div>
 
   <div class="card col12"><h2>Manual-process losses — engaged leads we lost (by root cause)</h2>
     <div class="scroll"><table id="lossT"><thead><tr>
@@ -78,7 +78,7 @@ tbody tr:hover{background:var(--card2)}
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>Detailed lead records — most-recent sample (full-period total ≈226 quote-reachers; see KPIs) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
+  <div class="card col12"><h2>Real DFW service-area quotes — your serviceable leads (only ~11 of 638 real quotes are in DFW; full daily volume in the chart) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
     <div class="scroll"><table id="leadT"><thead><tr>
       <th>Date</th><th>User</th><th>▶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
     </tr></thead><tbody></tbody></table></div>
@@ -97,15 +97,15 @@ tbody tr:hover{background:var(--card2)}
 
 <script>
 const DATA = {
- "window":"Last 30 days · USA · 730 sessions total (all days) · funnel rates measured on a 100-session sample · non-US + test traffic excluded",
- "generated":"2026-06-22 (full 30-day period · 730 US sessions)",
- "kpis":{"visitors":730,"leads":226,"leadPct":31,"bounces":504,"bouncePct":69,"booked":7,"bookPct":3.1,"losses":37,"near":22,"pipeline":"~$55K est"},
- "outcomes":{"Booked":7,"Reached book/pay":22,"Manual-process":37,"Quote viewed":160},
- "sources":{"Facebook (in-app)":555,"Instagram (in-app)":36,"Chrome/Safari mobile":139},
- "geo":{"DFW metro":183,"Rest of Texas":190,"Outside Texas":357},
+ "window":"All days: Apr 9 - Jun 22, 2026 | Zelli quotes (USA) | 638 real customer quotes after removing 656 test quotes (51%)",
+ "generated":"2026-06-22 | all-days Zelli quote analysis (test traffic excluded)",
+ "kpis":{"visitors":1294,"leads":638,"leadPct":49,"bounces":656,"bouncePct":51,"booked":2,"bookPct":0.3,"losses":92,"near":2,"pipeline":"$152.6K"},
+ "outcomes":{"Completed (no booking)":517,"Expired":92,"Cancelled":27,"Booked/Paid":2},
+ "sources":{"Facebook/Instagram in-app":81,"Chrome/Safari mobile":19},
+ "geo":{"DFW (real, serviceable)":11,"Rest of US (real)":627},
  "today":{"date":"Jun 17","visitors":29,"leads":7,"bounces":22,"booked":0,"newManual":"1 (Volvo XC60 dealer-only $724)"},
  "bounceTypes":{"Instant tap-off":15,"Quick exit":38,"Frustration":11,"Idle / left open":17,"Internal / team":16},
- "byDay":{"Jun 15":{"leads":10,"bounces":37},"Jun 16":{"leads":17,"bounces":38},"Jun 17":{"leads":6,"bounces":22}},
+ "byDay":{"Jun 1":{"leads":3,"bounces":0},"Jun 2":{"leads":20,"bounces":0},"Jun 3":{"leads":9,"bounces":0},"Jun 4":{"leads":17,"bounces":0},"Jun 8":{"leads":5,"bounces":0},"Jun 9":{"leads":27,"bounces":0},"Jun 10":{"leads":37,"bounces":0},"Jun 11":{"leads":15,"bounces":0},"Jun 12":{"leads":4,"bounces":0},"Jun 13":{"leads":20,"bounces":0},"Jun 14":{"leads":29,"bounces":0},"Jun 15":{"leads":21,"bounces":0},"Jun 16":{"leads":22,"bounces":0},"Jun 17":{"leads":34,"bounces":0},"Jun 18":{"leads":44,"bounces":0},"Jun 19":{"leads":95,"bounces":0},"Jun 20":{"leads":50,"bounces":0},"Jun 21":{"leads":59,"bounces":0},"Jun 22":{"leads":20,"bounces":0}},
  "losses":[
   {"user":"1lcc1fy","vehicle":"2021 Volvo XC60","service":"Car key copy","loc":"","quote":"724.08","dep":"125","lux":"Yes","cause":"Dealer-only key (Volvo) + $724 price shock","beh":"Jun17"},
   {"user":"1o20y0d","vehicle":"2021 Volvo XC90","service":"Fob programming","loc":"","quote":"129.90","dep":"39","lux":"Yes","cause":"Dealer-only key (order from dealer)","beh":"Jun16"},
@@ -117,36 +117,17 @@ const DATA = {
   {"user":"flll59","vehicle":"2023 Ford Explorer","service":"Car key copy","loc":"","quote":"204.48","dep":"0","lux":"Yes (BUG)","cause":"Luxury misclassification","beh":"Jun15"}
  ],
  "leads":[
-  {"time":"Jun17","user":"1lcc1fy","src":"FB","dev":"Mobile","vehicle":"2021 Volvo XC60","service":"Car key copy","outcome":"MANUAL-PROCESS","quote":"724.08","loc":"","status":"Completed","notes":"dealer-only key + $724 price shock","flag":1},
-  {"time":"Jun17","user":"un480f","src":"FB","dev":"Edge PC","vehicle":"2015 Chevy Camaro","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":"LUX MISFLAG + $65 dep","flag":1},
-  {"time":"Jun17","user":"yqmb15","src":"FB","dev":"Mobile","vehicle":"2024 Genesis GV70","service":"Fob prog","outcome":"Quote viewed","quote":"129.90","loc":"","status":"Completed","notes":"23 clk · luxury","flag":1},
-  {"time":"Jun17","user":"1eydeqj","src":"FB","dev":"Mobile","vehicle":"2005 Dodge Durango","service":"Car key copy","outcome":"Quote viewed","quote":"194.85","loc":"","status":"Completed","notes":"left in 10s"},
-  {"time":"Jun17","user":"1psbn2a","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"215.36","loc":"","status":"Completed","notes":""},
-  {"time":"Jun17","user":"1fysdsx","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"1te73c5","src":"FB","dev":"Firefox","vehicle":"","service":"Car key copy","outcome":"BOOKED","quote":"859.29","loc":"","status":"Confirmed Jun 19","notes":"✓ Bruce Dunn — booked!"},
-  {"time":"Jun16","user":"12nixx3","src":"FB","dev":"Mobile","vehicle":"Mercedes CLS '08","service":"Key copy prog","outcome":"Reached /payment","quote":"226.19","loc":"","status":"Completed","notes":"scheduled 2PM, unconfirmed","flag":1},
-  {"time":"Jun16","user":"1o20y0d","src":"Direct","dev":"Chrome PC","vehicle":"2021 Volvo XC90","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"dealer-only key","flag":1},
-  {"time":"Jun16","user":"b49s0s","src":"FB","dev":"Mobile","vehicle":"2012 Mercedes ML","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"129.90","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
-  {"time":"Jun16","user":"w2h6ar","src":"Direct","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"534.65","loc":"","status":"Completed","notes":"high $"},
-  {"time":"Jun16","user":"s0b95p","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"480.52","loc":"","status":"Completed","notes":""},
-  {"time":"Jun16","user":"w1sbtv","src":"Direct","dev":"MobSafari","vehicle":"2011 Ford Edge","service":"Car key copy","outcome":"Quote viewed","quote":"421.08","loc":"","status":"Completed","notes":"LUX MISFLAG $421 Ford","flag":1},
-  {"time":"Jun16","user":"6be35y","src":"IG","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"395.00","loc":"","status":"Completed","notes":"DFW · $395","flag":1},
-  {"time":"Jun16","user":"1abhzny","src":"FB","dev":"MobSafari","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"337.63","loc":"","status":"Completed","notes":"luxury +$101 dep"},
-  {"time":"Jun16","user":"1ooufzp","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"216.39","loc":"","status":"Completed","notes":"DFW"},
-  {"time":"Jun16","user":"1gnzduh","src":"FB","dev":"Mobile","vehicle":"GM smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"20 clk · 5 pg"},
-  {"time":"Jun16","user":"16m6msx","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"akctme","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun16","user":"c2l4sy","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun15","user":"rx9x1o","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Reached /book","quote":"215.31","loc":"","status":"Completed","notes":"23 clk · hit /book","flag":1},
-  {"time":"Jun15","user":"2ap78a","src":"IG","dev":"Mobile","vehicle":"BMW 4-Series '21","service":"Fob prog","outcome":"MANUAL-PROCESS","quote":"238.15","loc":"","status":"Completed","notes":"luxury + no part","flag":1},
-  {"time":"Jun15","user":"evffhm","src":"FB","dev":"Mobile","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"345.31","loc":"","status":"Completed","notes":"luxury +$104 dep"},
-  {"time":"Jun15","user":"fwjl32","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Car key copy","outcome":"Quote viewed","quote":"226.19","loc":"","status":"Completed","notes":"luxury +$68 dep"},
-  {"time":"Jun15","user":"860arp","src":"FB","dev":"Mobile","vehicle":"2014 Chevy Impala","service":"Car key copy","outcome":"Quote viewed","quote":"197.99","loc":"","status":"Completed","notes":"LUX MISFLAG + $59 dep","flag":1},
-  {"time":"Jun15","user":"flll59","src":"FB","dev":"Mobile","vehicle":"2023 Ford Explorer","service":"Car key copy","outcome":"Quote viewed","quote":"204.48","loc":"","status":"Completed","notes":"LUX MISFLAG","flag":1},
-  {"time":"Jun15","user":"iho7dw","src":"FB","dev":"Mobile","vehicle":"CDJ smart key","service":"Car key copy","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"15 clk · 6 pg"},
-  {"time":"Jun15","user":"1ytr7ev","src":"FB","dev":"Mobile","vehicle":"2008 Lexus ES350","service":"Combo copy prog","outcome":"Quote viewed","quote":"102.84","loc":"","status":"Completed","notes":"luxury (correct)"},
-  {"time":"Jun15","user":"t43k8a","src":"FB","dev":"Mobile","vehicle":"","service":"—","outcome":"Quote viewed","quote":"","loc":"","status":"","notes":"no quote ID captured"},
-  {"time":"Jun15","user":"u8s0s7","src":"Direct","dev":"Chrome PC","vehicle":"","service":"Lockout","outcome":"Quote viewed","quote":"227.33","loc":"","status":"INTERNAL/TEST","notes":"⚠ internal test addr — excluded from pipeline","flag":1}
+  {"time":"Apr9","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Expired","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Apr22","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Expired","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun9","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Completed","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun9","user":"","src":"Zelli","dev":"","vehicle":"","service":"car_key_copy","outcome":"Cancelled","quote":"345.31","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun9","user":"","src":"Zelli","dev":"","vehicle":"","service":"car_key_copy","outcome":"Cancelled","quote":"507.68","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun9","user":"","src":"Zelli","dev":"","vehicle":"","service":"car_key_copy","outcome":"Completed","quote":"313.91","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun13","user":"","src":"Zelli","dev":"","vehicle":"","service":"car_key_copy","outcome":"Completed","quote":"325.72","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun13","user":"","src":"Zelli","dev":"","vehicle":"","service":"car_key_copy","outcome":"Completed","quote":"325.72","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun19","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Completed","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun21","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Completed","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1},
+  {"time":"Jun21","user":"","src":"Zelli","dev":"","vehicle":"","service":"lockout","outcome":"Completed","quote":"162.38","loc":"","status":"","notes":"DFW","flag":1}
  ],
  "dropped":[
   {"user":"6be35y","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"395.00","addr":"","dfw":"DFW"},
@@ -161,10 +142,10 @@ const DATA = {
   {"user":"s0b95p","date":"Jun16","drop":"Quote viewed","vehicle":"car key copy","price":"480.52","addr":"","dfw":""}
  ],
  "insights":[
-  {"sev":"high","t":"🔬 Full 30-day US funnel: 730 sessions → ~45% engage → ~31% reach quote → ~5% manual → ~3% payment → 7 booked","w":"730 total US sessions over the last 30 days (all days; non-US + internal test excluded). Funnel proportions measured on a 100-session sample that was consistent across every independent pull, so they hold for the full period. 55% never click anything. The demand is real — engaged users reach /payment with 25+ clicks — but the top of the funnel leaks badly. Per-session detail for all 730 isn't extractable via automation (Clarity caps the list at 100); the most-recent 100 are detailed in the tables."},
+  {"sev":"high","t":"📊 ALL DAYS (Apr 9 – Jun 22): 1,294 quotes → 656 (51%) were internal TESTING → 638 real customer quotes → only 2 ever booked/paid","w":"Half of every quote your system generated is your own team testing (6732 Dapper Drive alone = 273 quotes; 29 test addresses total). The real customer total is 638 quotes worth $152,579 in pipeline — but only 1 booked + 1 paid. That's a ~0.3% close rate. The volume is real and growing (Jun 19 = 95 real quotes, $23.6K); almost none convert. Closing the loop on these quotes is the single biggest money lever."},
   {"sev":"high","t":"🚪 The leak is the /lp/auto landing page — 61 of 100 die there, 35 with ZERO clicks","w":"61% of all US visitors drop on /lp/auto, and 35 of them never tap a single thing before leaving. The quote page (/automotive-quote) drops another 22. This one page is the single biggest hole in the funnel."},
   {"sev":"high","t":"📱 81% arrive in the Facebook/Instagram in-app browser — 100% mobile","w":"76 sessions are FacebookApp + 5 InstagramApp (rest Chrome/Safari mobile). This is exactly why /lp/auto fails: the 'See my price' CTA renders dead/greyed and the dropdowns don't respond inside the FB/IG in-app browser, so people literally can't act."},
-  {"sev":"high","t":"🤠 25 of 100 US visitors are in your DFW service area","w":"Dallas (11), Fort Worth (4), Bedford (3), Plano (2), Arlington (2), + Allen/Denton/Grand Prairie. ~Half instant-bounce on /lp/auto (0 clicks); the other half engage hard and reach the quote (Fort Worth 7 clicks/6.5min, Bedford 12 clicks, Dallas 22 clicks) — but no contact info is captured, so none get followed up."},
+  {"sev":"high","t":"🤠 Only ~11 of 638 real quotes are in your DFW service area — your real serviceable demand is tiny","w":"Once the test traffic (mostly DFW addresses like 6732 Dapper Drive, McKinney) is removed, only ~11 real quotes are actually in the DFW metro — the other 627 are out of area, all over the US. So the paid ads are pulling national traffic you can't service. Either geo-target ads to DFW, or build a national affiliate/dispatch model. This is likely the #1 reason the close rate is 0.3%."},
   {"sev":"med","t":"Luxury classifier still over-flagging mainstream cars (Camaro, Ford Edge, Impala, Explorer)","w":"From the Zelli-matched detail below: 4 domestic cars tagged Luxury=Yes with deposit gates, plus genuine dealer-only routing (Volvo). Needs a make/model whitelist."},
   {"sev":"low","t":"Data-provider APIs still failing on every quote","w":"batchdata, smarty (HTTP 402) and placekey (HTTP 401) failed on every quote pulled this week — property enrichment is running degraded."}
  ],
@@ -191,19 +172,19 @@ const ADDR={};
 const pq=q=>parseFloat(String(q||'').replace(/,/g,''))||0;
 const fmtK=n=>'$'+(n>=1000?(n/1000).toFixed(1)+'K':Math.round(n));
 function renderKpis(k){const kdefs=[
- ['USA visitors',k.visitors,'',''],
- ['Leads (got a quote)',k.leads,'green',(k.leadPct||0)+'% of visitors'],
- ['Bounced (no quote)',k.bounces,'red',(k.bouncePct||0)+'% bounce'],
- ['Booked (paid)',k.booked,'green',(k.bookPct||0)+'% of leads'],
- ['Manual-process losses',k.losses,'amber','engaged but lost'],
- ['Quote pipeline value',k.pipeline,'','sum of lead quotes'],
+ ['Total quote attempts',k.visitors,'',''],
+ ['Real customer quotes',k.leads,'green',(k.leadPct||0)+'% of attempts'],
+ ['Test / junk quotes',k.bounces,'red',(k.bouncePct||0)+'% was testing'],
+ ['Booked / paid',k.booked,'green',(k.bookPct||0)+'% of real quotes'],
+ ['Expired (no action)',k.losses,'amber','quote expired unused'],
+ ['Real quote pipeline',k.pipeline,'','sum of real quotes'],
 ];$('#kpis').innerHTML=kdefs.map(d=>`<div class="kpi"><div class="v ${d[2]}">${d[1]}</div><div class="l">${d[0]}</div><div class="d mut">${d[3]}</div></div>`).join('');}
 renderKpis(DATA.kpis);
 
 const C={ink:'#e8edf6',grid:'#2c3a52',mut:'#94a3b8'};
 Chart.defaults.color=C.mut;Chart.defaults.borderColor=C.grid;Chart.defaults.font.family="Segoe UI";
 
-const funnelChart=new Chart($('#funnel'),{type:'bar',data:{labels:['Visitors','Reached quote','Reached book','Booked'],
+const funnelChart=new Chart($('#funnel'),{type:'bar',data:{labels:['Quote attempts','Real quotes','Reached pay','Booked'],
  datasets:[{data:[DATA.kpis.visitors,DATA.kpis.leads,DATA.kpis.near,DATA.kpis.booked],backgroundColor:['#5b8def','#22d3ee','#fbbf24','#34d399'],borderRadius:6}]},
  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:C.grid}},y:{grid:{display:false}}}}});
 
@@ -224,8 +205,7 @@ new Chart($('#bounce'),{type:'bar',data:{labels:Object.keys(DATA.bounceTypes),
  options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:C.grid}}}}});
 
 const bydayChart=new Chart($('#byday'),{type:'bar',data:{labels:Object.keys(DATA.byDay),
- datasets:[{label:'Leads',data:Object.values(DATA.byDay).map(o=>o.leads),backgroundColor:'#22d3ee',borderRadius:5},
- {label:'Bounces',data:Object.values(DATA.byDay).map(o=>o.bounces),backgroundColor:'#475569',borderRadius:5}]},
+ datasets:[{label:'Real quotes',data:Object.values(DATA.byDay).map(o=>o.leads),backgroundColor:'#22d3ee',borderRadius:5}]},
  options:{plugins:{legend:{labels:{boxWidth:12}}},scales:{x:{grid:{display:false},stacked:true},y:{grid:{color:C.grid},stacked:true}}}});
 
 // loss table
