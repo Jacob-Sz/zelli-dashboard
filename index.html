@@ -57,7 +57,7 @@ tbody tr:hover{background:var(--card2)}
 </div>
 <div class="bar"></div>
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px">
-  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">ðŸ—“ Filter the whole report by day</span>
+  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">ðŸ—“ Detailed-sample day filter <span style="color:var(--amber);text-transform:none">â€” KPIs above cover all 30 days / 730 sessions; the per-lead detail below is the most-recent sample only</span></span>
   <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 <div class="kpis" id="kpis"></div>
@@ -70,7 +70,7 @@ tbody tr:hover{background:var(--card2)}
 
   <div class="card col4"><h2>Lead geography (vs DFW service area)</h2><canvas id="geo"></canvas></div>
   <div class="card col6"><h2>Why visitors bounced</h2><canvas id="bounce"></canvas></div>
-  <div class="card col6"><h2>Lead volume by day</h2><canvas id="byday"></canvas></div>
+  <div class="card col6"><h2>Lead volume by day â€” recent detailed sample (not the full 30 days)</h2><canvas id="byday"></canvas></div>
 
   <div class="card col12"><h2>Manual-process losses â€” engaged leads we lost (by root cause)</h2>
     <div class="scroll"><table id="lossT"><thead><tr>
@@ -78,7 +78,7 @@ tbody tr:hover{background:var(--card2)}
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>All leads (reached a quote) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
+  <div class="card col12"><h2>Detailed lead records â€” most-recent sample (full-period total â‰ˆ226 quote-reachers; see KPIs) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
     <div class="scroll"><table id="leadT"><thead><tr>
       <th>Date</th><th>User</th><th>â–¶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
     </tr></thead><tbody></tbody></table></div>
