@@ -89,6 +89,12 @@ tbody tr:hover{background:var(--card2)}
       <th>User</th><th>▶ Video</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
+  <div class="card col12" id="perDayCard"><h2>ðŸ“† Per-day insights â€” June (each = real quote-reaching leads that day)</h2>
+    <div class="scroll"><table id="perDayT"><thead><tr>
+      <th>Day</th><th class="right">Quotes</th><th class="right">Pipeline</th><th>Top service</th><th class="right">DFW</th><th class="right">High-$</th><th class="right">Booked</th><th class="right">Expired</th><th>Biggest lead</th><th>Insight</th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+
 
   <div class="card col12"><h2>Recommendations — how to proceed</h2><div id="recs"></div></div>
 </div>
@@ -103,6 +109,7 @@ const DATA = {
  "outcomes":{"Completed":800,"Expired":93,"Cancelled":31,"Booked":1,"Payment Confirmed":1},
  "sources":{"Facebook/Instagram in-app":81,"Chrome/Safari mobile":19},
  "geo":{"DFW (approx, by address)":18,"Rest of US":908},
+ "perDay":[{"day":"Jun 28","n":18,"sum":4166,"svc":"car key copy","dfw":2,"hi":4,"booked":0,"exp":0,"big":"$496 car key copy","ins":"4 high-ticket"},{"day":"Jun 27","n":17,"sum":4856,"svc":"car key copy","dfw":4,"hi":5,"booked":0,"exp":0,"big":"$786 car key copy","ins":"5 high-ticket"},{"day":"Jun 26","n":8,"sum":2856,"svc":"car key copy","dfw":1,"hi":2,"booked":0,"exp":0,"big":"$724 car key copy","ins":""},{"day":"Jun 25","n":64,"sum":12818,"svc":"lockout","dfw":22,"hi":6,"booked":0,"exp":0,"big":"$481 car key copy","ins":"high-volume, 6 high-ticket, 0 conversions"},{"day":"Jun 24","n":46,"sum":9590,"svc":"lockout","dfw":0,"hi":2,"booked":0,"exp":0,"big":"$484 car key copy","ins":"high-volume, 0 conversions"},{"day":"Jun 23","n":71,"sum":13335,"svc":"lockout","dfw":25,"hi":3,"booked":0,"exp":0,"big":"$443 car key copy","ins":"high-volume, 3 high-ticket, 0 conversions"},{"day":"Jun 22","n":98,"sum":16727,"svc":"lockout","dfw":0,"hi":1,"booked":0,"exp":0,"big":"$421 key copy programming","ins":"high-volume, 0 conversions"},{"day":"Jun 21","n":59,"sum":12586,"svc":"lockout","dfw":26,"hi":9,"booked":0,"exp":0,"big":"$481 key copy programming","ins":"high-volume, 9 high-ticket, 0 conversions"},{"day":"Jun 20","n":49,"sum":12100,"svc":"car key copy","dfw":1,"hi":6,"booked":0,"exp":0,"big":"$600 car key copy","ins":"high-volume, 6 high-ticket, 0 conversions"},{"day":"Jun 19","n":91,"sum":22942,"svc":"lockout","dfw":57,"hi":14,"booked":0,"exp":0,"big":"$2464 car key copy","ins":"high-volume, 14 high-ticket, 0 conversions"},{"day":"Jun 18","n":42,"sum":9319,"svc":"lockout","dfw":0,"hi":4,"booked":0,"exp":0,"big":"$583 all keys lost","ins":"high-volume, 4 high-ticket, 0 conversions"},{"day":"Jun 17","n":31,"sum":6171,"svc":"lockout","dfw":16,"hi":1,"booked":0,"exp":0,"big":"$724 car key copy","ins":"0 conversions"},{"day":"Jun 16","n":22,"sum":6823,"svc":"car key copy","dfw":2,"hi":6,"booked":0,"exp":0,"big":"$535 car key copy","ins":"6 high-ticket, 0 conversions"},{"day":"Jun 15","n":21,"sum":4511,"svc":"car key copy","dfw":10,"hi":0,"booked":0,"exp":0,"big":"$389 key copy programming","ins":"0 conversions"},{"day":"Jun 14","n":29,"sum":8037,"svc":"car key copy","dfw":8,"hi":6,"booked":0,"exp":0,"big":"$600 car key copy","ins":"6 high-ticket, 0 conversions"},{"day":"Jun 13","n":20,"sum":6715,"svc":"car key copy","dfw":9,"hi":5,"booked":0,"exp":0,"big":"$552 car key copy","ins":"5 high-ticket, 0 conversions"},{"day":"Jun 12","n":4,"sum":1220,"svc":"car key copy","dfw":0,"hi":2,"booked":0,"exp":0,"big":"$461 car key copy","ins":""},{"day":"Jun 11","n":15,"sum":3091,"svc":"lockout","dfw":8,"hi":1,"booked":0,"exp":0,"big":"$454 key copy programming","ins":""},{"day":"Jun 10","n":37,"sum":11451,"svc":"car key copy","dfw":10,"hi":9,"booked":1,"exp":0,"big":"$2464 car key copy","ins":"9 high-ticket"},{"day":"Jun 9","n":27,"sum":10188,"svc":"car key copy","dfw":2,"hi":7,"booked":0,"exp":0,"big":"$2464 car key copy","ins":"7 high-ticket, 0 conversions"},{"day":"Jun 8","n":5,"sum":1889,"svc":"all keys lost","dfw":0,"hi":1,"booked":0,"exp":0,"big":"$691 all keys lost","ins":""},{"day":"Jun 4","n":17,"sum":4407,"svc":"car lockout","dfw":8,"hi":1,"booked":0,"exp":0,"big":"$866 car lockout key copy","ins":""},{"day":"Jun 3","n":9,"sum":2733,"svc":"all keys lost","dfw":0,"hi":3,"booked":0,"exp":0,"big":"$432 all keys lost","ins":"3 high-ticket"},{"day":"Jun 2","n":20,"sum":4081,"svc":"lockout","dfw":10,"hi":1,"booked":0,"exp":0,"big":"$525 all keys lost","ins":"0 conversions"},{"day":"Jun 1","n":3,"sum":861,"svc":"lockout","dfw":0,"hi":1,"booked":0,"exp":0,"big":"$428 car key copy","ins":""}],
  "today":{"date":"all days","visitors":638,"leads":638,"bounces":0,"booked":2,"newManual":"see chart"},
  "bounceTypes":{"lockout":496,"car key copy":222,"fob programming":80,"all keys lost":50,"key copy programming":34,"car lockout":28},
  "byDay":{"Jun 1":{"leads":3,"bounces":0},"Jun 2":{"leads":20,"bounces":0},"Jun 3":{"leads":9,"bounces":0},"Jun 4":{"leads":17,"bounces":0},"Jun 8":{"leads":5,"bounces":0},"Jun 9":{"leads":27,"bounces":0},"Jun 10":{"leads":37,"bounces":0},"Jun 11":{"leads":15,"bounces":0},"Jun 12":{"leads":4,"bounces":0},"Jun 13":{"leads":20,"bounces":0},"Jun 14":{"leads":29,"bounces":0},"Jun 15":{"leads":21,"bounces":0},"Jun 16":{"leads":22,"bounces":0},"Jun 17":{"leads":31,"bounces":0},"Jun 18":{"leads":42,"bounces":0},"Jun 19":{"leads":91,"bounces":0},"Jun 20":{"leads":49,"bounces":0},"Jun 21":{"leads":59,"bounces":0},"Jun 22":{"leads":98,"bounces":0},"Jun 23":{"leads":71,"bounces":0},"Jun 24":{"leads":46,"bounces":0},"Jun 25":{"leads":64,"bounces":0},"Jun 26":{"leads":8,"bounces":0},"Jun 27":{"leads":17,"bounces":0},"Jun 28":{"leads":18,"bounces":0}},
@@ -190,6 +197,14 @@ $('#leadT tbody').innerHTML=DATA.leads.map(r=>{
  <td>${r.vehicle||'—'}</td><td>${r.service}</td><td><span class="pill ${cls}">${r.outcome}</span></td>
  <td class="right">${r.quote?'$'+r.quote:'—'}</td><td class="${ADDR[r.user]?'':'mut'}">${addr}</td>
  <td class="${r.flag?'flag':'mut'}">${r.notes||''}</td></tr>`}).join('');
+// ===PERDAY-RENDER===
+if(DATA.perDay){$('#perDayT tbody').innerHTML=DATA.perDay.map(r=>`<tr>
+ <td>${r.day}</td><td class="right">${r.n}</td><td class="right">${r.sum.toLocaleString()}</td><td>${r.svc}</td>
+ <td class="right ${r.dfw?'':'mut'}">${r.dfw||'â€”'}</td><td class="right ${r.hi?'flag':'mut'}">${r.hi||'â€”'}</td>
+ <td class="right ${r.booked?'':'mut'}">${r.booked||'â€”'}</td><td class="right ${r.exp?'amber':'mut'}">${r.exp||'â€”'}</td>
+ <td class="mut">${r.big}</td><td class="${r.ins?'flag':'mut'}">${r.ins||''}</td></tr>`).join('');}
+// ===END-PERDAY===
+
 
 // ---------- date filter: recompute KPIs + funnel/outcomes/by-day + table ----------
 function bucket(o){ if(o==='BOOKED')return 'Booked'; if(o&&o.indexOf('Reached')===0)return 'Reached book/pay'; if(o==='MANUAL-PROCESS')return 'Manual-process'; return 'Quote viewed'; }
