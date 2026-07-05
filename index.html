@@ -57,7 +57,7 @@ tbody tr:hover{background:var(--card2)}
 </div>
 <div class="bar"></div>
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px">
-  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">🗓 Filter the DFW leads by day <span style="color:var(--amber);text-transform:none">— the all-days quote volume is in the chart below; KPIs cover all 891 real quotes</span></span>
+  <span style="color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700">🗓 Filter this week's quotes by day <span style="color:var(--amber);text-transform:none">— Jun 29–Jul 5 week-to-date; KPIs cover all 31 real quotes</span></span>
   <div id="leadFilter" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 <div class="kpis" id="kpis"></div>
@@ -70,7 +70,7 @@ tbody tr:hover{background:var(--card2)}
 
   <div class="card col4"><h2>Lead geography (vs DFW service area)</h2><canvas id="geo"></canvas></div>
   <div class="card col6"><h2>📦 Quotes by service type (real)</h2><canvas id="bounce"></canvas></div>
-  <div class="card col6"><h2>📅 Real quotes per day — all days, Apr 9-Jun 26 (test traffic excluded)</h2><canvas id="byday"></canvas></div>
+  <div class="card col6"><h2>📅 Real quotes per day — this week (Jun 29–Jul 5, week-to-date)</h2><canvas id="byday"></canvas></div>
 
   <div class="card col12" style="display:none"><h2>Manual-process losses — engaged leads we lost (by root cause)</h2>
     <div class="scroll"><table id="lossT"><thead><tr>
@@ -78,7 +78,7 @@ tbody tr:hover{background:var(--card2)}
     </tr></thead><tbody></tbody></table></div>
   </div>
 
-  <div class="card col12"><h2>Customer leads — one row per address PER VISIT/FLOW (596 from 926 quotes; same-visit multi-service collapsed, revisits kept separate; high-$ amber) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
+  <div class="card col12"><h2>Customer leads — one row per distinct quote (31 real quotes this week, Jun 29–Jul 5; high-$ amber) <span id="leadCount" class="mut" style="font-weight:400;text-transform:none;letter-spacing:0"></span></h2>
     <div class="scroll"><table id="leadT"><thead><tr>
       <th>Date</th><th>User</th><th>▶ Video</th><th>Src</th><th>Device</th><th>Vehicle</th><th>Service</th><th>Outcome</th><th class="right">$</th><th>Service address</th><th>Notes</th>
     </tr></thead><tbody></tbody></table></div>
@@ -89,14 +89,14 @@ tbody tr:hover{background:var(--card2)}
       <th>User</th><th>▶ Video</th><th>Date</th><th>Drop point</th><th>Vehicle</th><th class="right">Quote $</th><th>Service address</th><th>Area</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
-  <div class="card col12" id="perDayCard"><h2>&#128198; Per-day insights &mdash; June (each = real quote-reaching leads that day)</h2>
+  <div class="card col12" id="perDayCard"><h2>&#128198; Per-day insights &mdash; this week (Jun 29&ndash;Jul 5; each = real quotes generated that day)</h2>
     <div class="scroll"><table id="perDayT"><thead><tr>
       <th>Day</th><th class="right">Quotes</th><th class="right">Pipeline</th><th>Top service</th><th class="right">DFW</th><th class="right">High-$</th><th class="right">Booked</th><th class="right">Expired</th><th>Biggest lead</th><th>Insight</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 
 
-  <div class="card col12" id="sessCard" style="border-left:3px solid var(--amber)"><h2>&#128250; Clarity session behavior &mdash; ALL 338 recordings watched click-by-click (Jun 16&ndash;29, US/Facebook)</h2>
+  <div class="card col12" id="sessCard" style="border-left:3px solid var(--amber)"><h2>&#128250; Clarity session behavior &mdash; historical deep-dive (Jun 16&ndash;29 sample, 338 recordings) &middot; reference, not this week</h2>
     <p class="mut" style="margin:.2rem 0 .5rem">140 instant bounces (0 clicks) &middot; 198 engaged &rarr; <b style="color:#34d399">150 reached a quote (76%)</b> &middot; <b style="color:var(--amber,#fbbf24)">33 saw the price then backed out</b> &middot; <b style="color:#f87171">39 motivated buyers blocked (never got a price)</b> &middot; 41 sessions hit dead clicks</p>
     <p style="margin:.2rem 0 .6rem;font-size:13px"><b style="color:#f87171">Leak 1 &mdash; blocked buyers:</b> 39 users clicked 6&ndash;30&times; and typed their info but the form never gave a price (unresponsive fields in the FB/IG in-app browser). <b style="color:var(--amber,#fbbf24)">Leak 2 &mdash; price rejection:</b> 33 got the quote, returned to /lp/auto and left &mdash; hottest follow-up list. <b style="color:#f87171">Leak 3 &mdash; /call-now/tx:</b> Google/YouTube-ad sessions bounce there in seconds.</p>
     <div class="scroll"><table id="sessT"><thead><tr><th>Session</th><th class="right">Clicks + typing</th><th class="right">Duration</th><th>What the video shows</th></tr></thead><tbody>
