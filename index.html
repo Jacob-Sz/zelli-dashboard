@@ -202,6 +202,20 @@ const $ = (s)=>document.querySelector(s);
 document.getElementById('stamp').innerHTML =
   'Window: <b>'+DATA.window+'</b><br><span style="color:var(--green);font-weight:700">🕒 Last updated: '+DATA.generated+'</span>';
 
+// staleness banner — if the daily 7:30 AM refresh ever fails, the page itself alerts the team
+(function(){
+ const m=(DATA.generated||'').match(/^(\d{4})-(\d{2})-(\d{2})/);
+ if(!m) return;
+ const gen=new Date(+m[1],+m[2]-1,+m[3]);
+ const ageH=(Date.now()-gen.getTime())/36e5;
+ if(ageH>32){
+  const d=document.createElement('div');
+  d.style.cssText='background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);border-radius:10px;padding:10px 14px;font-weight:700;margin:-8px 0 14px';
+  d.textContent='⚠ Data refresh overdue — last updated '+m[0]+' ('+Math.round(ageH)+'h ago). Numbers below may be stale.';
+  document.querySelector('.bar').after(d);
+ }
+})();
+
 // KPIs + date-filter helpers
 const norm=s=>(s||'').replace(/\s+/g,'');
 const dOf=s=>(s||'').split(' ')[0];
