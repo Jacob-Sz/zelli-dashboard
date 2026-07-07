@@ -1,0 +1,135 @@
+<title>Zelli — Data & A/B Testing Action Plan</title>
+<style>
+:root{
+  --bg:#0d1420; --card:#141e31; --card2:#18243a; --line:#243350;
+  --ink:#e6ecf7; --mut:#8ea0bd; --accent:#38d0e8;
+  --good:#3ad48f; --warn:#f5b942; --bad:#f27a6d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.58 "Segoe UI",system-ui,-apple-system,sans-serif;padding:0 20px 90px}
+.wrap{max-width:980px;margin:0 auto}
+.eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:11.5px;font-weight:700;color:var(--accent);margin:42px 0 10px}
+h1{font-size:clamp(26px,4vw,38px);line-height:1.14;margin:0 0 10px;font-weight:750;text-wrap:balance}
+.sub{color:var(--mut);max-width:66ch;margin:0 0 34px}
+h2{font-size:20px;margin:46px 0 6px;font-weight:750}
+h2 .ph{color:var(--accent);font-variant-numeric:tabular-nums}
+.when{color:var(--mut);font-size:13px;margin:0 0 14px}
+h3{font-size:15px;margin:20px 0 8px;font-weight:700}
+p{max-width:70ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.mut{color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid #1b2740;vertical-align:top}
+.scroll{overflow-x:auto}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.p-you{background:rgba(56,208,232,.13);color:var(--accent)}
+.p-dev{background:rgba(245,185,66,.14);color:var(--warn)}
+.p-me{background:rgba(58,212,143,.14);color:var(--good)}
+.p-auto{background:rgba(142,160,189,.14);color:var(--mut)}
+ul.tasks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+ul.tasks li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 15px;display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:start}
+ul.tasks li b{display:block}
+ul.tasks li .d{grid-column:1;color:var(--mut);font-size:13.5px}
+ul.tasks li .who{grid-column:2;grid-row:1/3;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.callout{border-left:3px solid var(--warn);background:var(--card2);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:14px;max-width:none}
+.callout.g{border-left-color:var(--good)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;font-size:13.5px}
+.flow .n{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 13px;white-space:nowrap}
+.flow .a{color:var(--accent);font-weight:700}
+code{background:#0f1828;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:Consolas,monospace;font-size:12.5px}
+.foot{margin-top:52px;color:var(--mut);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+a{color:var(--accent)}
+</style>
+<div class="wrap">
+  <div class="eyebrow">Zelli &times; Sure Lock &amp; Key &middot; Operating plan</div>
+  <h1>One dashboard, fresh every day. One experiment, live every week.</h1>
+  <p class="sub">The audit found the leaks. This is the machine that fixes them: an automated data pipeline that keeps a single link current without anyone logging in, and an A/B loop that ships one test a week and calls its own winners. Owners: <span class="pill p-you">Jacob</span> <span class="pill p-dev">Zelli dev</span> <span class="pill p-me">Claude</span> <span class="pill p-auto">Automatic</span></p>
+
+  <h2><span class="ph">Phase 1</span> &middot; One source of truth</h2>
+  <p class="when">This week &middot; effort: ~2 hours total &middot; kills the &ldquo;different info every time&rdquo; problem</p>
+  <ul class="tasks">
+    <li><b>Version the report folder with git</b><span class="d">OneDrive silently rolled the dashboard back once already. A local git repo on Zelli_Reports makes every change recoverable and rollbacks visible.</span><span class="who"><span class="pill p-me">Claude</span></span></li>
+    <li><b>One rebuild command: <code>rebuild_all.ps1</code></b><span class="d">Chains the existing idempotent scripts (data refresh &rarr; per-day &rarr; leads dedup &rarr; sessions explorer &rarr; public sanitizer) so the dashboard is always rebuilt the same way, in the same order, from the same CSVs.</span><span class="who"><span class="pill p-me">Claude</span></span></li>
+    <li><b>Put the FULL dashboard (with addresses) behind a login</b><span class="d">Finish the Cloudflare Access setup we started: the full page deploys to a private URL, your team signs in with email, addresses stay protected. Until then: full = localhost, public link = stripped.</span><span class="who"><span class="pill p-you">Jacob</span><span class="pill p-me">Claude</span></span></li>
+  </ul>
+
+  <h2><span class="ph">Phase 2</span> &middot; Automatic daily data</h2>
+  <p class="when">Next 1&ndash;2 weeks &middot; the real unlock: numbers refresh with nobody logging in</p>
+  <div class="flow">
+    <span class="n">Zelli reporting endpoint <span class="mut">(quotes JSON)</span></span><span class="a">&rarr;</span>
+    <span class="n">Clarity Data Export API <span class="mut">(traffic + dead clicks)</span></span><span class="a">&rarr;</span>
+    <span class="n">6:00 AM task: pull + rebuild</span><span class="a">&rarr;</span>
+    <span class="n">existing 4-hour publish task</span><span class="a">&rarr;</span>
+    <span class="n">same link, fresh every morning</span>
+  </div>
+  <ul class="tasks">
+    <li><b>Add a read-only quotes endpoint to Zelli</b><span class="d">The blocker today is that pulling quotes needs your admin login, which keeps expiring. Zelli is your product &mdash; a token-protected <code>GET /api/reporting/quotes?since=DATE</code> returning id, address, service, status, estimate, created_at is a half-day dev task and removes the human from the loop forever.</span><span class="who"><span class="pill p-dev">Zelli dev</span></span></li>
+    <li><b>Turn on Clarity&rsquo;s Data Export API</b><span class="d">Clarity has an official export API (Settings &rarr; Data Export &rarr; generate token). It serves daily aggregates &mdash; sessions, dead clicks, quick-backs, by page and source. That covers daily monitoring; the click-by-click recording audit stays a weekly 2-click CSV export.</span><span class="who"><span class="pill p-you">Jacob</span><span class="pill p-me">Claude</span></span></li>
+    <li><b>Create the <code>ZelliDataRefresh</code> scheduled task (daily 6:00 AM)</b><span class="d">Pulls both APIs, appends to the CSVs, runs <code>rebuild_all.ps1</code>. The existing <code>ZelliDashboardPublish</code> task then ships it. Result: the link you shared is never more than a day old.</span><span class="who"><span class="pill p-me">Claude</span><span class="pill p-auto">Automatic</span></span></li>
+    <li><b>Daily digest to your phone</b><span class="d">One morning message: quotes yesterday, booked, blocked-buyer rate, dead-click rate, and an alert if any number moves more than 30% day-over-day.</span><span class="who"><span class="pill p-me">Claude</span><span class="pill p-auto">Automatic</span></span></li>
+  </ul>
+
+  <h2><span class="ph">Phase 3</span> &middot; The A/B machine</h2>
+  <p class="when">Weeks 2&ndash;3 to first live test &middot; then one experiment per week, evaluated automatically</p>
+
+  <h3>Step 0 &mdash; instrument the funnel (without this, no test can be scored)</h3>
+  <div class="card">
+    <p style="margin:0 0 8px">Six events, fired from the landing page and confirmed server-side where it counts:</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Event</th><th>Fires when</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td><code>lp_view</code></td><td>landing page loads</td><td>denominator for everything</td></tr>
+        <tr><td><code>service_selected</code></td><td>user picks a service</td><td>intent signal</td></tr>
+        <tr><td><code>form_start</code> / <code>form_submit</code></td><td>first field touched / form sent</td><td>isolates the dead-click leak precisely</td></tr>
+        <tr><td><code>quote_view</code></td><td>price shown</td><td>the 56% line we measured by hand</td></tr>
+        <tr><td><code>lead_captured</code></td><td>phone number saved</td><td>the money metric for follow-up</td></tr>
+        <tr><td><code>booked</code> <span class="mut">(server-side)</span></td><td>payment confirmed in Zelli</td><td>ground truth &mdash; never trust the client for this</td></tr>
+      </tbody>
+    </table></div>
+    <p class="mut" style="margin:10px 0 0;font-size:13px">Send each as a Clarity custom event (<code>clarity("event", ...)</code> &mdash; free, already installed) and to the Zelli backend. ~1 dev-day. This also means the next recordings audit is automatic instead of 338 videos.</p>
+  </div>
+
+  <h3>Step 1 &mdash; a tiny experiment switch, not a heavy tool</h3>
+  <div class="card">
+    <p style="margin:0">~50 lines in the landing page: hash the visitor ID &rarr; assign A or B (sticky), read the active experiment from a small config, tag every event with the variant. Client-side testing tools break exactly where your traffic lives &mdash; the Facebook/Instagram in-app browser &mdash; so we own the switch. (If you later want a UI for it, GrowthBook is the free open-source option; same idea.)</p>
+  </div>
+
+  <h3>Step 2 &mdash; the automatic scorer</h3>
+  <div class="card">
+    <p style="margin:0 0 8px">A script on the daily 6 AM task pulls per-variant event counts and computes conversion + significance (two-proportion test with a sequential stopping rule). It writes an <b>Experiments card onto the dashboard</b> &mdash; arms, conversion, probability-to-beat &mdash; and declares the result on its own:</p>
+    <p style="margin:0" class="mut">&ldquo;stop &amp; ship B&rdquo; at &ge;95% probability-to-beat &middot; &ldquo;stop, no difference&rdquo; after 14 days or the sample cap &middot; otherwise &ldquo;keep running&rdquo;. Nobody eyeballs spreadsheets; the link you already share shows the verdict.</p>
+  </div>
+
+  <div class="callout"><b>Honest math on speed:</b> current volume is ~24 engaged sessions/day. Detecting a 10-point lift (56%&rarr;66% quote-reach) needs ~380 sessions per arm &asymp; 4 weeks. So the process tests <b>big swings only</b> (one bold change, not button colors), measures the <b>earliest metric that can move</b> (form_start&rarr;quote_view, not booked), and the fastest lever of all: <b>raising ad budget during a test week cuts test time proportionally.</b> Known bugs skip the queue entirely &mdash; fixes ship, tests are for choices.</div>
+
+  <h3>The first four, already prioritized by the 338-recording audit</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>#</th><th>Change</th><th>Type</th><th>Metric</th><th>Expected impact</th></tr></thead>
+    <tbody>
+      <tr><td class="num">0</td><td>Fix dead taps in the FB/IG in-app browser + plain-link CTA fallback</td><td><span class="pill p-bad" style="background:rgba(242,122,109,.14);color:var(--bad)">Bug fix &mdash; ship, don&rsquo;t test</span></td><td class="num">form_start &rarr; quote_view</td><td>recovers the 39 blocked buyers (~20% of engaged)</td></tr>
+      <tr><td class="num">1</td><td>Phone number before the price is shown</td><td><span class="pill p-me">A/B test</span></td><td class="num">lead_captured / lp_view</td><td>turns the 33 price-rejectors into a call list</td></tr>
+      <tr><td class="num">2</td><td>Quote page: reviews + guarantee + one big CTA</td><td><span class="pill p-me">A/B test</span></td><td class="num">quote_view &rarr; booked</td><td>attacks the 30% back-out rate</td></tr>
+      <tr><td class="num">3</td><td>Google/YouTube ads &rarr; /lp/auto instead of /call-now/tx</td><td><span class="pill p-me">A/B test (ad level)</span></td><td class="num">quote_view / ad click</td><td>rescues a ~100%-bounce channel</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span class="ph">Rhythm</span> &middot; the weekly loop once the machine runs</h2>
+  <div class="card">
+    <div class="scroll"><table>
+      <thead><tr><th>When</th><th>What happens</th><th>Who</th></tr></thead>
+      <tbody>
+        <tr><td class="num">Daily 6:00</td><td>Data pulls, dashboard rebuilds &amp; publishes, experiment scored, digest sent</td><td><span class="pill p-auto">Automatic</span></td></tr>
+        <tr><td class="num">Mon</td><td>Read the verdict; ship winner or start the next test from the backlog</td><td><span class="pill p-you">Jacob</span> + <span class="pill p-dev">dev</span></td></tr>
+        <tr><td class="num">Fri</td><td>Weekly Clarity recordings export &rarr; auto-annotated &rarr; explorer updates</td><td><span class="pill p-you">Jacob</span> (2 clicks) + <span class="pill p-me">Claude</span></td></tr>
+        <tr><td class="num">Monthly</td><td>Re-rank the experiment backlog against the new numbers</td><td><span class="pill p-you">Jacob</span> + <span class="pill p-me">Claude</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="callout g"><b>What unblocks everything:</b> the two dev asks &mdash; the read-only quotes endpoint and the six events. Both together are roughly two dev-days. Everything else on this page I can build on your machine, and it runs by itself after that.</div>
+
+  <div class="foot">Based on the Jun 16&ndash;29 audit of 338 Clarity recordings (111/198 engaged reached a quote; 39 blocked by dead form taps; 33 backed out at the price) and the Zelli quote database &mdash; now 1,356 real quotes / $302K quoted pipeline through Jul 6, 2026 (2 booked, 0.15%). Live dashboard: jacob-sz.github.io/zelli-dashboard Companion docs: Session_Leaks_Fix_Brief.pdf &middot; Zelli_All_Recordings_Notes.xlsx &middot; live dashboard: jacob-sz.github.io/zelli-dashboard</div>
+</div>
